@@ -26,8 +26,21 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
 @media(max-width:760px){.shell{padding:14px 10px 30px}.hero{padding:16px}.hero-top{display:block}.hero h2{font-size:20px}.mode-switch{margin-top:14px}.panel{padding:14px}.brand h1{font-size:16px}.date-chip{font-size:10px}.grid{grid-template-columns:1fr}}
 
 
-.focus-panel{margin-bottom:10px}.focus-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px}.focus-clock,.average-box{background:#f3e5e2;border:1px solid #e3c1b8;padding:16px;border-radius:4px}.clock-label{font-size:10px;color:#997a74;letter-spacing:.06em}.clock-value{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:.04em;color:#86564f;margin:7px 0 12px;font-variant-numeric:tabular-nums}.average-value{font-size:25px;font-weight:800;color:#86564f;margin:8px 0}.focus-actions,.rescue-actions{display:flex;gap:8px;flex-wrap:wrap}.procrastination{margin-top:16px;padding-top:15px;border-top:1px dashed #d9b0a8;display:grid;gap:12px}.procrastination h3{margin:0}.rescue-actions{margin-top:8px}.countdown{background:#fffaf9;border:1px solid #e7cbc5;padding:14px;border-radius:4px;width:max-content;max-width:100%}.stretch-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stretch-card{background:#fffaf9;border:1px solid #e7cbc5;padding:12px;border-radius:4px;font-size:12px;line-height:1.6}.stretch-card strong{display:block;color:#965b53;margin-bottom:4px}.focus-panel .primary,.focus-panel .soft-btn{padding:10px 12px}.hide{display:none!important}
+.focus-panel{margin-bottom:10px}.focus-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px}.focus-clock,.average-box{background:#f3e5e2;border:1px solid #e3c1b8;padding:16px;border-radius:4px}.clock-label{font-size:10px;color:#997a74;letter-spacing:.06em}.clock-value{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:.04em;color:#86564f;margin:7px 0 12px;font-variant-numeric:tabular-nums}.average-value{font-size:25px;font-weight:800;color:#86564f;margin:8px 0}.focus-actions,.rescue-actions{display:flex;gap:8px;flex-wrap:wrap}.procrastination{margin-top:16px;padding-top:15px;border-top:1px dashed #d9b0a8;display:grid;gap:12px}.procrastination h3{margin:0}.rescue-actions{margin-top:8px}.countdown{background:#fffaf9;border:1px solid #e7cbc5;padding:14px;border-radius:4px;width:max-content;max-width:100%}.stretch-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stretch-card{background:#fffaf9;border:1px solid #e7cbc5;padding:12px;border-radius:4px;font-size:12px;line-height:1.6}.stretch-card strong{display:block;color:#965b53;margin-bottom:4px}.event.plan-thought{background:#F5D5CD;border:1px solid #E7B7AA;box-shadow:inset 3px 0 0 #F7E9D9}.event.doing-thought{background:#FFF0E8;border:1px solid #E8BEB2;box-shadow:inset 3px 0 0 #D98D7B}.event.plan-thought .event-tag{color:#8B5B50}.event.doing-thought .event-tag{color:#A7665A}.focus-panel .primary,.focus-panel .soft-btn{padding:10px 12px}.hide{display:none!important}
 @media(max-width:650px){.focus-layout{grid-template-columns:1fr}.stretch-list{grid-template-columns:1fr}.focus-actions button{flex:1}}
+
+
+/* Warm rose + cream thought cards; execution and planning colors are intentionally swapped. */
+.plan-thought { background: #FFF0E8 !important; border-color: #E8BEB2 !important; }
+.plan-thought::before { background: #D98D7B !important; }
+.doing-thought { background: #F5D5CD !important; border-color: #E7B7AA !important; }
+.doing-thought::before { background: #F7E9D9 !important; }
+.plan-thought .time, .plan-thought .thought-time, .plan-thought .time-badge {
+  background: #F7E9D9 !important; color: #8B5B50 !important;
+}
+.doing-thought .time, .doing-thought .thought-time, .doing-thought .time-badge {
+  background: #D98D7B !important; color: #FFF8F1 !important;
+}
 
 </style>
 </head>
@@ -40,26 +53,26 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
 <section class="hero">
  <div class="hero-top"><div><div class="eyebrow">MY GENTLE PRODUCTIVITY</div><h2 id="heroTitle">先整理，再開始。</h2><p id="heroDesc">計畫時允許自己想很多；執行時，把注意力交給眼前的一步。</p></div>
  <div class="mode-switch" role="group" aria-label="狀態切換"><button id="planningBtn" class="active">▤ 計畫</button><button id="doingBtn">▶ 執行</button></div></div>
- <div class="rule" id="modeRule"><strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。</div>
+ <div class="rule" id="modeRule"><strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必多想，只要完成眼前這一步；新想法先放進時間條，稍後再想。</div>
 </section>
 <div class="grid">
 <section class="panel">
  <div class="panel-head"><div><h3>▤ 今日執行清單</h3><div class="sub">只放今天真的要做的事，最多 3 件</div></div><div class="count" id="planCount">0 / 3</div></div>
  <div class="plan-list" id="planList"></div>
  <form class="add-plan" id="planForm"><input class="field" id="planInput" maxlength="120" placeholder="例如：去圖書館完成報告…" aria-label="新增今日計畫"><button class="primary" type="submit">＋ 加入</button></form>
- <div class="sub" style="margin-top:12px">小提醒：不是所有想法都要立刻變成任務。</div>
+ <div class="sub" style="margin-top:12px">小提醒：相信自己做得完就寫下來去做吧！</div>
 </section>
 <section class="panel" id="thoughtPanel">
- <div class="panel-head"><div><h3>◷ 想法紀錄</h3><div class="sub" id="thoughtPanelSub">記錄想法出現的時間，不急著處理</div></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end"><select class="field" id="thoughtDateSelect" aria-label="查看哪一天的想法" style="width:auto;max-width:150px;padding:8px 10px;font-size:12px"></select><div class="count" id="thoughtCount">0 則</div></div></div>
- <div class="execute-banner hide" id="executeNotice"><strong>♥ 現在是執行時間</strong>先把注意力留給手上的任務。突然冒出的想法可以快速記下，先不展開分析；你不需要現在解決它。</div>
+ <div class="panel-head"><div><h3>◷ 想法記錄</h3><div class="sub" id="thoughtPanelSub">記錄想法出現的時間，不急著處理</div></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end"><select class="field" id="thoughtDateSelect" aria-label="查看哪一天的想法" style="width:auto;max-width:150px;padding:8px 10px;font-size:12px"></select><div class="count" id="thoughtCount">0 則</div></div></div>
+ <div class="execute-banner hide" id="executeNotice"><strong>♥ 現在是執行時間</strong>先把注意力留給手上的任務。突然冒出的想法可以快速記下，但不需要現在解決它！</div>
  <form class="thought-form" id="thoughtForm">
   <div class="form-row"><label class="small-label" for="thoughtTime">想法出現時間</label><input class="field" id="thoughtTime" type="time" required></div>
-  <div><label class="small-label" for="thoughtInput">剛剛想到什麼？</label><textarea class="field" id="thoughtInput" maxlength="800" placeholder="例如：我想利用學校資源學些什麼……" required></textarea></div>
+  <div><label class="small-label" for="thoughtInput">剛剛想到什麼？</label><textarea class="field" id="thoughtInput" maxlength="800" placeholder="例如：等下想去買麻辣燙……" required></textarea></div>
   <div class="form-row"><label class="small-label" for="thoughtType">想法類型</label><select class="field" id="thoughtType"><option>靈感</option><option>待思考</option><option>生活觀察</option><option>未來計畫</option><option>情緒 / 感受</option></select></div>
   <div class="form-actions"><span>記錄下來，就不用一直在腦中提醒自己。</span><button class="primary" type="submit" id="thoughtSubmit">記下這個想法</button></div>
  </form>
  <div class="timeline" id="timeline"></div>
- <div class="empty hide" id="thoughtEmpty">今天的時間條還是空白的。<br>有想法時，再來放一朵小花吧 ✦</div>
+ <div class="empty hide" id="thoughtEmpty">今天的時間條還是空白的。<br>有想法時，再來吧 ✦</div>
 </section>
 </div>
 <section class="panel focus-panel hide" id="focusPanel" style="margin-top:15px">
@@ -68,11 +81,27 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
   <div class="focus-clock"><div class="clock-label">本次執行時間</div><div class="clock-value" id="focusClock">00:00:00</div><div class="focus-actions"><button class="primary" id="startFocus">▶ 開始計時</button><button class="soft-btn" id="stopFocus">■ 停止並記錄</button></div></div>
   <div class="average-box"><div class="clock-label">每日平均執行時間</div><div class="average-value" id="averageTime">0 分鐘</div><div class="sub">以最近 7 天有紀錄的日期計算</div><div class="sub" id="averageDetail">目前尚無執行紀錄</div></div>
  </div>
+ <div class="countdown" id="pomodoroPrompt" style="margin-top:12px">
+  <div class="clock-label">番茄鐘提醒</div>
+  <div id="pomodoroMessage">開始計時後，每累積 25 分鐘會提醒一次休息。</div>
+  <div class="rescue-actions" style="margin-top:10px"><button class="soft-btn hide" id="takeShortBreak">休息 5 分鐘</button><button class="soft-btn hide" id="takeLongBreak">休息 20 分鐘</button></div>
+  <div class="sub" id="breakStatus" style="margin-top:8px"></div>
+ </div>
+ <div class="execution-thoughts">
+  <div class="panel-head"><div><h3>◷ 執行中的想法</h3><div class="sub">途中冒出的想法可以先記下，不必離開執行模式</div></div></div>
+  <form class="thought-form" id="doingThoughtForm">
+   <div class="form-row"><label class="small-label" for="doingThoughtTime">記錄時間</label><input class="field" id="doingThoughtTime" type="time" required></div>
+   <div><label class="small-label" for="doingThoughtInput">剛剛想到什麼？</label><textarea class="field" id="doingThoughtInput" maxlength="800" placeholder="先把想法放在這裡，等等再處理……" required></textarea></div>
+   <div class="form-actions"><span>執行途中紀錄會用不同底色標示。</span><button class="primary" type="submit">記下想法</button></div>
+  </form>
+  <div class="timeline" id="doingTimeline"></div>
+  <div class="empty" id="doingThoughtEmpty">執行途中還沒有記錄想法。</div>
+ </div>
  <div class="procrastination">
-  <div><h3>▣ 拖延急救</h3><div class="sub">不用等到有動力，先做一個很小的開始。</div></div>
-  <div class="rescue-actions"><button class="primary" id="startTen">▶ 開始 10 分鐘倒數</button><button class="soft-btn" id="randomStretch">⟳ 隨機 3 個伸展動作</button></div>
-  <div class="countdown hide" id="countdownBox"><div class="clock-label">只要先開始 10 分鐘</div><div class="clock-value" id="countdownClock">10:00</div><button class="soft-btn" id="cancelCountdown">取消倒數</button></div>
-  <div class="stretch-list" id="stretchList"><div class="empty">卡住時，按「隨機 3 個伸展動作」讓身體先動起來。</div></div>
+  <div><h3>▣ 我就是想分心</h3><div class="sub">可以分心 10 分鐘，建議分心時不要一直坐著。<br>每按一次就會記錄一次。</div></div>
+  <div class="rescue-actions"><button class="primary" id="startTen">↗ 我就是想分心 10 分鐘</button></div>
+  <div class="countdown hide" id="countdownBox"><div class="clock-label">分心時間剩餘</div><div class="clock-value" id="countdownClock">10:00</div><button class="soft-btn" id="cancelCountdown">提早結束分心</button></div>
+  <div class="average-box"><div class="clock-label">最近 7 天分心統計</div><div class="average-value"><span id="todayDistractionCount">0</span> 次 <span class="sub">／今天</span></div><div class="sub">每日平均分心次數：<strong id="averageDistractions">0 次</strong></div><div class="sub" id="distractionDetail">最近 7 天的每日平均</div></div>
  </div>
 </section>
 <div class="footer">SAVE YOUR THOUGHTS. KEEP MOVING. <span>♥</span> LOCAL DATA</div>
@@ -88,7 +117,7 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
  const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
  let today = dateKey(new Date());
  const timeNow = () => `${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}`;
- const freshDay = () => ({plans:[],thoughts:[],focusMs:0,focusSessions:[]});
+ const freshDay = () => ({plans:[],thoughts:[],focusMs:0,focusSessions:[],distractionCount:0});
  try {
    const saved = window.localStorage.getItem(STORAGE_KEY);
    data = saved ? (JSON.parse(saved) || {}) : {};
@@ -98,7 +127,7 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
  if (!data[today]) data[today] = freshDay();
  const pruneOldDays = () => { const keep = Object.keys(data).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-7); Object.keys(data).forEach(k => { if (!keep.includes(k)) delete data[k]; }); };
  pruneOldDays();
- const day = () => { if (!data[today]) data[today] = freshDay(); const d=data[today]; if(!Array.isArray(d.plans))d.plans=[]; if(!Array.isArray(d.thoughts))d.thoughts=[]; if(!Array.isArray(d.focusSessions))d.focusSessions=[]; if(typeof d.focusMs!=='number')d.focusMs=0; return d; };
+ const day = () => { if (!data[today]) data[today] = freshDay(); const d=data[today]; if(!Array.isArray(d.plans))d.plans=[]; if(!Array.isArray(d.thoughts))d.thoughts=[]; if(!Array.isArray(d.focusSessions))d.focusSessions=[]; if(typeof d.focusMs!=='number')d.focusMs=0; if(!Array.isArray(d.thoughts))d.thoughts=[]; if(typeof d.distractionCount!=='number')d.distractionCount=0; return d; };
  const save = () => {
    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
    catch(e) { toast('瀏覽器暫時無法保存資料；請下載檔案後用 Chrome 或 Edge 開啟。'); }
@@ -107,34 +136,123 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
  const escapeHtml = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  $('todayLabel').textContent = `今天 · ${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()}`;
  $('thoughtTime').value = timeNow();
+ $('doingThoughtTime').value = timeNow();
  function refreshClock(){ const d=new Date(); const key=dateKey(d); $('todayLabel').textContent=`今天 · ${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}　${timeNow()}`; if(document.activeElement!==$('thoughtTime')) $('thoughtTime').value=timeNow(); if(key!==today){today=key;if(!data[today])data[today]=freshDay();pruneOldDays();save();renderPlans();renderThoughts();} updateFocusUI(); }
  setInterval(refreshClock,1000);
  function setMode(next) {
    mode=next;
    $('planningBtn').classList.toggle('active',mode==='planning');
    $('doingBtn').classList.toggle('active',mode==='doing');
-   $('heroTitle').textContent = mode==='planning' ? '先整理，再開始。' : '現在，不用想得更完美。';
+   $('heroTitle').textContent = mode==='planning' ? '寫下今天一定要做的3件事，再開始。' : '現在，只要先開始5分鐘就好。';
    $('heroDesc').textContent = mode==='planning' ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了。接下來只要做眼前的一步，不需要一直重新檢討。';
-   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不分析、不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
+   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
    $('executeNotice').classList.add('hide');
-   $('thoughtInput').placeholder = '例如：我想利用學校資源學些什麼……';
+   $('thoughtInput').placeholder = '例如：等下想去買麻辣燙……';
    $('thoughtSubmit').textContent = '記下這個想法';
    $('planInput').disabled = mode==='doing';
    $('planForm').classList.toggle('hide',mode==='doing');
    $('thoughtPanel').classList.toggle('hide',mode!=='planning');
    $('focusPanel').classList.toggle('hide',mode!=='doing');
+   renderDoingThoughts();
    renderPlans();
  }
- let focusInterval=null, focusStartedAt=null, focusBaseMs=0, countdownEndsAt=null, countdownInterval=null;
+ let focusStartedAt=null, focusBaseMs=0, countdownEndsAt=null, countdownInterval=null;
+ let lastPomodoroPrompt=0, breakTimer=null;
  const fmt = ms => { ms=Math.max(0,Math.floor(ms/1000)); const h=Math.floor(ms/3600),m=Math.floor((ms%3600)/60),sec=ms%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; };
  const currentFocusMs = () => focusBaseMs + (focusStartedAt ? Date.now()-focusStartedAt : 0);
- function updateFocusUI(){ $('focusClock').textContent=fmt(currentFocusMs()); $('focusStatus').textContent=focusStartedAt?'計時中':'尚未計時'; const days=Object.keys(data).sort().slice(-7); const vals=days.map(k=>({k,ms:(data[k]?.focusMs||0)+(k===today?currentFocusMs():0)})); const active=vals.filter(x=>x.ms>0); const avg=active.length?active.reduce((a,x)=>a+x.ms,0)/active.length:0; const mins=Math.round(avg/60000); $('averageTime').textContent=mins>=60?`${Math.floor(mins/60)} 小時 ${mins%60} 分鐘`:`${mins} 分鐘`; $('averageDetail').textContent=active.length?`最近 7 天，共 ${active.length} 天有執行紀錄`:'目前尚無執行紀錄'; }
- $('startFocus').addEventListener('click',()=>{if(focusStartedAt)return;focusStartedAt=Date.now();$('focusStatus').textContent='計時中';updateFocusUI();toast('開始執行，先專注眼前這一步。');});
- $('stopFocus').addEventListener('click',()=>{if(!focusStartedAt){toast('你還沒有開始計時。');return;} const elapsed=Date.now()-focusStartedAt; day().focusMs=(day().focusMs||0)+elapsed; day().focusSessions.push({start:new Date(focusStartedAt).toISOString(),end:new Date().toISOString(),ms:elapsed});focusStartedAt=null;focusBaseMs=0;save();updateFocusUI();toast(`已記錄 ${Math.round(elapsed/60000)} 分鐘執行時間。`);});
- const stretches=[['肩頸放鬆','肩膀向上聳起再放下，慢慢重複 8 次。'],['坐姿伸展','坐直，雙手向上延伸，保持 15 秒。'],['手腕活動','手腕輕輕畫圈，左右各 10 秒。'],['胸口打開','雙手放到身後或腰側，輕輕打開胸口 15 秒。'],['站立伸展','站起來伸個懶腰，手臂向上延伸 15 秒。'],['小腿伸展','扶穩桌面，一腳向後踩穩，左右各 15 秒。'],['肩膀繞圈','肩膀往後慢慢繞圈 8 次，再往前 8 次。'],['眼睛休息','看向遠方約 20 秒，讓視線離開螢幕。']];
- $('randomStretch').addEventListener('click',()=>{const picks=[...stretches].sort(()=>Math.random()-.5).slice(0,3);$('stretchList').innerHTML=picks.map((x,i)=>`<div class="stretch-card"><strong>${i+1}. ${x[0]}</strong>${x[1]}</div>`).join('');});
- $('startTen').addEventListener('click',()=>{if(countdownInterval)clearInterval(countdownInterval);countdownEndsAt=Date.now()+10*60*1000;$('countdownBox').classList.remove('hide');const tick=()=>{const left=Math.max(0,countdownEndsAt-Date.now());$('countdownClock').textContent=`${String(Math.floor(left/60000)).padStart(2,'0')}:${String(Math.floor(left%60000/1000)).padStart(2,'0')}`;if(left<=0){clearInterval(countdownInterval);countdownInterval=null;countdownEndsAt=null;toast('10 分鐘到了！做得很好，接著決定要繼續或休息。');}};tick();countdownInterval=setInterval(tick,250);toast('倒數開始：先做 10 分鐘就好。');});
- $('cancelCountdown').addEventListener('click',()=>{if(countdownInterval)clearInterval(countdownInterval);countdownInterval=null;countdownEndsAt=null;$('countdownBox').classList.add('hide');});
+ function updateFocusUI(){
+   $('focusClock').textContent=fmt(currentFocusMs());
+   $('focusStatus').textContent=focusStartedAt?'計時中':'尚未計時';
+   const days=Object.keys(data).sort().slice(-7);
+   const vals=days.map(k=>({k,ms:(data[k]?.focusMs||0)+(k===today?currentFocusMs():0)}));
+   const active=vals.filter(x=>x.ms>0);
+   const avg=active.length?active.reduce((a,x)=>a+x.ms,0)/active.length:0;
+   const mins=Math.round(avg/60000);
+   $('averageTime').textContent=mins>=60?`${Math.floor(mins/60)} 小時 ${mins%60} 分鐘`:`${mins} 分鐘`;
+   $('averageDetail').textContent=active.length?`最近 7 天，共 ${active.length} 天有執行紀錄`:'目前尚無執行紀錄';
+   const recentDays=Object.keys(data).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-7);
+   const total=recentDays.reduce((sum,k)=>sum+(Number(data[k]?.distractionCount)||0),0);
+   $('todayDistractionCount').textContent=Number(day().distractionCount)||0;
+   $('averageDistractions').textContent=`${(total/7).toFixed(1)} 次`;
+   $('distractionDetail').textContent=`最近 7 天共 ${total} 次（包含沒有分心紀錄的日期）`;
+   const cycles=Math.floor(currentFocusMs()/(25*60*1000));
+   if(focusStartedAt && cycles>lastPomodoroPrompt){
+     lastPomodoroPrompt=cycles;
+     if(cycles%4===0){
+       $('pomodoroMessage').textContent='已經過了 4 個番茄鐘！要休息 20 分鐘嗎？';
+       $('takeLongBreak').classList.remove('hide'); $('takeShortBreak').classList.add('hide');
+     } else {
+       $('pomodoroMessage').textContent='已經過了一個番茄鐘！要休息 5 分鐘嗎？';
+       $('takeShortBreak').classList.remove('hide'); $('takeLongBreak').classList.add('hide');
+     }
+     toast(cycles%4===0?'已經過了 4 個番茄鐘，可以考慮休息 20 分鐘。':'已經過了一個番茄鐘，要休息 5 分鐘嗎？');
+   }
+ }
+ $('startFocus').addEventListener('click',()=>{
+   if(focusStartedAt)return;
+   focusStartedAt=Date.now(); $('focusStatus').textContent='計時中';
+   if(!window.__dayLogFocusTick) window.__dayLogFocusTick=setInterval(updateFocusUI,500);
+   updateFocusUI(); toast('開始執行，先專注眼前這一步。');
+ });
+ $('stopFocus').addEventListener('click',()=>{
+   if(!focusStartedAt){toast('你還沒有開始計時。');return;}
+   const elapsed=Date.now()-focusStartedAt;
+   day().focusMs=(day().focusMs||0)+elapsed;
+   day().focusSessions.push({start:new Date(focusStartedAt).toISOString(),end:new Date().toISOString(),ms:elapsed});
+   focusStartedAt=null; focusBaseMs=0; lastPomodoroPrompt=0; save(); updateFocusUI();
+   toast(`已記錄 ${Math.round(elapsed/60000)} 分鐘執行時間。`);
+ });
+ function startBreak(minutes){
+   if(breakTimer) clearInterval(breakTimer);
+   let ends=Date.now()+minutes*60*1000;
+   $('breakStatus').textContent=`休息計時：${minutes} 分鐘。主計時器會繼續累積。`;
+   const tick=()=>{
+     const left=Math.max(0,ends-Date.now());
+     $('breakStatus').textContent=left>0?`休息中：${String(Math.floor(left/60000)).padStart(2,'0')}:${String(Math.floor(left%60000/1000)).padStart(2,'0')}（主計時器持續計時）`:'休息時間到了，可以回來繼續。';
+     if(left<=0){clearInterval(breakTimer);breakTimer=null;toast('休息時間到了，準備好再回到任務就好。');}
+   };
+   tick(); breakTimer=setInterval(tick,500);
+   $('takeShortBreak').classList.add('hide'); $('takeLongBreak').classList.add('hide');
+   $('pomodoroMessage').textContent='休息提醒已啟動；如果不休息，也可以直接繼續工作。';
+ }
+ $('takeShortBreak').addEventListener('click',()=>startBreak(5));
+ $('takeLongBreak').addEventListener('click',()=>startBreak(20));
+
+ $('startTen').addEventListener('click',()=>{
+   if(countdownInterval)clearInterval(countdownInterval);
+   day().distractionCount=(Number(day().distractionCount)||0)+1; save(); updateFocusUI();
+   countdownEndsAt=Date.now()+10*60*1000; $('countdownBox').classList.remove('hide');
+   const tick=()=>{
+     const left=Math.max(0,countdownEndsAt-Date.now());
+     $('countdownClock').textContent=`${String(Math.floor(left/60000)).padStart(2,'0')}:${String(Math.floor(left%60000/1000)).padStart(2,'0')}`;
+     if(left<=0){clearInterval(countdownInterval);countdownInterval=null;countdownEndsAt=null;$('countdownBox').classList.add('hide');toast('10 分鐘分心時間到了；想繼續或回來做事，都可以由你決定。');}
+   };
+   tick(); countdownInterval=setInterval(tick,250); toast('已記錄一次分心，10 分鐘從現在開始。');
+ });
+ $('cancelCountdown').addEventListener('click',()=>{
+   if(countdownInterval)clearInterval(countdownInterval);
+   countdownInterval=null;countdownEndsAt=null;$('countdownBox').classList.add('hide');
+   toast('已提前結束這次分心時間。');
+ });
+ function renderDoingThoughts(){
+   const list=$('doingTimeline'); if(!list)return; list.innerHTML='';
+   const thoughts=[...(day().thoughts||[])].sort((a,b)=>a.time.localeCompare(b.time));
+   $('doingThoughtEmpty').classList.toggle('hide',thoughts.length!==0);
+   thoughts.forEach(t=>{
+     const el=document.createElement('article');el.className='event '+(t.source==='doing'?'doing-thought':'plan-thought');
+     el.innerHTML=`<div class="event-top"><span class="event-time">${escapeHtml(t.time)}</span><button class="mini-btn" title="刪除此想法" aria-label="刪除此想法">×</button></div><div class="event-text">${escapeHtml(t.text)}</div><div class="event-tag">· ${t.source==='doing'?'執行途中記錄':'計畫中記錄'}${t.type?'｜'+escapeHtml(t.type):''}</div>`;
+     el.querySelector('button').addEventListener('click',()=>{day().thoughts=day().thoughts.filter(x=>x.id!==t.id);save();renderDoingThoughts();toast('已刪除這則想法');});
+     list.appendChild(el);
+   });
+ }
+ $('doingThoughtForm').addEventListener('submit',e=>{
+   e.preventDefault();
+   const text=$('doingThoughtInput').value.trim();
+   if(!text){toast('先寫下一個想法再記錄。');return;}
+   day().thoughts.push({id:Date.now()+Math.random(),time:$('doingThoughtTime').value||timeNow(),text,type:'執行途中',source:'doing'});
+   $('doingThoughtInput').value=''; $('doingThoughtTime').value=timeNow();
+   save();renderDoingThoughts();renderThoughts();toast('已記下執行途中想到的事。');
+ });
  function renderPlans() {
    const list=$('planList'); list.innerHTML='';
    $('planCount').textContent=`${day().plans.filter(p=>p.done).length} / ${day().plans.length} 完成`;
@@ -171,8 +289,8 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
    $('thoughtEmpty').classList.toggle('hide',thoughts.length!==0);
    $('thoughtEmpty').innerHTML=selectedDate===today?'今天還沒有想法紀錄。<br>有想法時，可以在這裡記下來。':'這一天沒有保存想法紀錄。';
    thoughts.forEach(t=>{
-    const el=document.createElement('article');el.className='event';
-    el.innerHTML=`<div class="event-top"><span class="event-time">${escapeHtml(t.time)}</span><button class="mini-btn" title="刪除此想法" aria-label="刪除此想法">×</button></div><div class="event-text">${escapeHtml(t.text)}</div><div class="event-tag">· ${escapeHtml(t.type)}</div>`;
+    const el=document.createElement('article');el.className='event '+(t.source==='doing'?'doing-thought':'plan-thought');
+    el.innerHTML=`<div class="event-top"><span class="event-time">${escapeHtml(t.time)}</span><button class="mini-btn" title="刪除此想法" aria-label="刪除此想法">×</button></div><div class="event-text">${escapeHtml(t.text)}</div><div class="event-tag">· ${t.source==='doing'?'執行途中記錄':'計畫中記錄'}${t.type?'｜'+escapeHtml(t.type):''}</div>`;
     el.querySelector('button').addEventListener('click',()=>{selectedDay.thoughts=selectedDay.thoughts.filter(x=>x.id!==t.id);save();renderThoughts();toast('已刪除這則想法');});
     list.appendChild(el);
    });
@@ -194,15 +312,15 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
    try {
      const text=$('thoughtInput').value.trim();
      if(!text){toast('先寫下一個想法再記錄喔 ♥');$('thoughtInput').focus();return;}
-     day().thoughts.push({id:Date.now()+Math.random(),time:$('thoughtTime').value || timeNow(),text,type:$('thoughtType').value});
+     day().thoughts.push({id:Date.now()+Math.random(),time:$('thoughtTime').value || timeNow(),text,type:$('thoughtType').value,source:'planning'});
      $('thoughtInput').value='';
      $('thoughtTime').value=timeNow();
-     save();renderThoughts();toast(mode==='doing'?'想法已收好，回到眼前這一步 ♥':'想法已放進時間條 ✦');
+     save();renderThoughts();renderDoingThoughts();toast('想法已記錄。');
    } catch(err) { console.error(err); toast('記錄想法失敗，請重新整理網頁再試一次。'); }
  });
  $('planningBtn').addEventListener('click',()=>setMode('planning'));
  $('doingBtn').addEventListener('click',()=>setMode('doing'));
- renderPlans();renderThoughts();setMode('planning');updateFocusUI();refreshClock();
+ renderPlans();renderThoughts();renderDoingThoughts();setMode('planning');updateFocusUI();refreshClock();
  // A visible startup confirmation helps distinguish a loaded page from a static preview.
  document.documentElement.dataset.appReady = 'true';
 })();
