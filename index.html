@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAY LOG / 計畫與執行</title>
+<style>
+:root{--rose:#d96b8b;--rose-dark:#a94365;--rose-soft:#fde8ef;--rose-pale:#fff5f8;--ink:#4e3941;--muted:#987f89;--line:#f2d9e2;--white:#fff;--green:#6d9b83;--shadow:0 12px 32px #a9436510}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#fff8fa,#fff 48%,#fff1f5);font-family:ui-rounded,"Arial Rounded MT Bold","Noto Sans TC",system-ui,sans-serif;color:var(--ink);min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}.shell{max-width:1080px;margin:auto;padding:26px 20px 52px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:18px;background:var(--rose-soft);display:grid;place-items:center;font-size:25px;box-shadow:inset 0 0 0 1px #f8d2df}.brand h1{font-size:22px;margin:0;letter-spacing:.04em}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}.date-chip{background:white;border:1px solid var(--line);padding:10px 14px;border-radius:999px;color:var(--rose-dark);font-size:13px;box-shadow:var(--shadow)}
+.hero{background:var(--white);border:1px solid var(--line);border-radius:30px;padding:26px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"♥";position:absolute;right:28px;top:-22px;font-size:120px;color:#fff0f5;transform:rotate(12deg);pointer-events:none}.hero-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.eyebrow{font-size:12px;color:var(--rose);font-weight:800;letter-spacing:.13em}.hero h2{font-size:clamp(24px,4vw,34px);margin:8px 0 8px;line-height:1.25}.hero p{color:var(--muted);margin:0;line-height:1.7;max-width:600px;font-size:14px}.mode-switch{display:flex;gap:5px;background:#fff2f6;padding:5px;border-radius:999px;flex-shrink:0;position:relative;z-index:2}.mode-switch button{padding:10px 15px;border-radius:999px;background:transparent;color:var(--muted);font-weight:700;font-size:13px}.mode-switch button.active{background:var(--rose);color:#fff;box-shadow:0 5px 12px #d96b8b40}
+.rule{margin-top:20px;background:var(--rose-pale);border:1px dashed #f0b8ca;padding:13px 16px;border-radius:17px;color:#87566a;font-size:13px;line-height:1.65;position:relative;z-index:1}.rule strong{color:var(--rose-dark)}
+.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:20px;margin-top:20px}.panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow);min-width:0}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.panel h3{margin:0;font-size:18px}.sub{color:var(--muted);font-size:12px;margin-top:5px}.count{background:var(--rose-soft);color:var(--rose-dark);font-size:12px;font-weight:800;padding:6px 10px;border-radius:999px}.plan-list{display:grid;gap:10px}.plan{display:flex;gap:12px;align-items:flex-start;background:#fff9fb;border:1px solid #f8e3ea;border-radius:18px;padding:13px}.plan input[type=checkbox]{appearance:none;width:22px;height:22px;border:2px solid #e6a8bc;border-radius:8px;margin:2px 0 0;flex-shrink:0;display:grid;place-items:center}.plan input:checked{background:var(--green);border-color:var(--green)}.plan input:checked:after{content:"✓";color:white;font-size:14px;font-weight:900}.plan-body{flex:1;min-width:0}.plan-title{font-weight:700;overflow-wrap:anywhere}.plan.done .plan-title{text-decoration:line-through;color:#a9959d}.plan-note{font-size:12px;color:var(--muted);margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere}.mini-btn{background:transparent;color:#b68a9a;padding:3px 6px;border-radius:8px}.mini-btn:hover{background:var(--rose-soft)}.add-plan{display:flex;gap:8px;margin-top:14px}.field{width:100%;border:1px solid var(--line);background:#fffdfd;border-radius:14px;padding:12px 13px;color:var(--ink);outline:none;min-width:0}.field:focus{border-color:#e59ab2;box-shadow:0 0 0 3px #fde8ef}.field::placeholder{color:#c4aeb7}textarea.field{resize:vertical;min-height:76px}.primary{background:var(--rose);color:#fff;font-weight:800;border-radius:14px;padding:11px 16px;white-space:nowrap;box-shadow:0 6px 14px #d96b8b2b}.primary:hover{background:var(--rose-dark)}.soft-btn{background:var(--rose-soft);color:var(--rose-dark);font-weight:700;border-radius:12px;padding:9px 12px}.empty{padding:22px 12px;text-align:center;color:#b49aa5;font-size:13px;border:1px dashed var(--line);border-radius:16px}.timeline{position:relative;padding-left:24px;display:grid;gap:13px}.timeline:before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:#f5cbd8;border-radius:5px}.event{position:relative;background:#fff9fb;border:1px solid #f8e3ea;border-radius:17px;padding:13px 14px}.event:before{content:"";position:absolute;left:-23px;top:17px;width:11px;height:11px;border-radius:50%;background:var(--rose);border:3px solid white;box-shadow:0 0 0 1px #f0b6c9}.event-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}.event-time{font-size:12px;font-weight:800;color:var(--rose-dark);background:#ffeaf1;padding:5px 8px;border-radius:999px}.event-text{font-size:14px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}.event-tag{font-size:11px;color:#a17e8d;margin-top:8px}.thought-form{display:grid;gap:10px;margin-bottom:17px;padding:14px;background:#fff6f9;border:1px solid #f8e3ea;border-radius:19px}.form-row{display:grid;grid-template-columns:120px 1fr;gap:8px}.small-label{font-size:12px;color:var(--muted);font-weight:700;align-self:center}.form-actions{display:flex;justify-content:space-between;align-items:center;gap:10px}.form-actions span{font-size:11px;color:var(--muted)}.execute-banner{background:#f0f8f3;border:1px solid #d6e9dd;color:#507b64;border-radius:17px;padding:13px 15px;font-size:13px;line-height:1.65;margin-bottom:15px}.execute-banner strong{display:block;font-size:14px;margin-bottom:3px}.hide{display:none!important}.footer{text-align:center;color:#b59aa5;font-size:12px;margin-top:22px}.footer span{color:var(--rose)}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#553c47;color:#fff;padding:11px 16px;border-radius:999px;font-size:13px;box-shadow:0 8px 24px #0002;opacity:0;pointer-events:none;transition:opacity .2s;z-index:5}.toast.show{opacity:1}
+@media(max-width:760px){.shell{padding:16px 13px 35px}header{align-items:flex-start}.brand h1{font-size:18px}.date-chip{font-size:11px;padding:9px 11px}.hero{padding:20px;border-radius:24px}.hero-top{display:block}.mode-switch{margin-top:17px;width:max-content}.grid{grid-template-columns:1fr}.panel{padding:18px;border-radius:22px}.add-plan{align-items:stretch}.add-plan .field{min-width:0}.form-row{grid-template-columns:1fr;gap:6px}.small-label{align-self:auto}.hero:after{right:8px;font-size:90px}.rule{font-size:12px}}
+
+/* Retro game-menu visual redesign inspired by the provided reference */
+:root{--rose:#f28e7b;--rose-dark:#9d5e56;--rose-soft:#f8c7bb;--rose-pale:#f8f1f0;--ink:#4e3937;--muted:#a7837d;--line:#d9b0a8;--white:#f9f4f3;--green:#72937d;--shadow:0 5px 0 #7d514b}
+*{box-sizing:border-box}body{background:#d8a394;color:var(--ink);font-family:ui-monospace,"Noto Sans TC",monospace;image-rendering:pixelated}
+.shell{max-width:1000px;padding:26px 20px 44px}
+header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f28e7b;color:#fff;border:2px solid #a76b61;box-shadow:3px 3px 0 #b98479;font-size:23px}.brand h1{font-size:19px;letter-spacing:.12em}.brand p{font-size:10px;letter-spacing:.08em}.date-chip{background:#f8f1f0;border:2px solid #8b5f59;border-radius:3px;box-shadow:3px 3px 0 #b98479;color:#86564f;font-weight:bold}
+.hero,.panel{background:#f8f3f2;border:3px solid #8c6059;border-radius:7px;box-shadow:5px 5px 0 #b98479}.hero{padding:20px 22px;overflow:visible}.hero:after{content:"";display:none}.eyebrow{color:#b76e61;font-size:10px;letter-spacing:.16em}.hero h2{font-size:23px;letter-spacing:.02em;margin:8px 0}.hero p{font-size:12px;color:#997a74}.hero-top{align-items:center}.mode-switch{background:#efd8d3;border-radius:4px;padding:4px;border:1px solid #d9b0a8}.mode-switch button{border-radius:3px;padding:10px 13px;font-family:inherit;font-size:12px;color:#a7837d}.mode-switch button.active{background:#f28e7b;color:white;box-shadow:inset 0 -3px 0 #d56e60}
+.rule{border:1px solid #e5c5bd;border-radius:4px;background:#f3e5e2;color:#86665f;font-size:12px;padding:11px 13px}.rule strong{color:#a85f55}
+.grid{gap:15px;margin-top:15px}.panel{padding:18px;border-radius:7px;box-shadow:4px 4px 0 #b98479}.panel h3{font-size:15px;letter-spacing:.02em}.sub{font-size:10px;color:#a7837d}.count{background:#f4c0b3;color:#8d514a;border-radius:3px;padding:5px 8px;font-size:10px;border:1px solid #e5a89b}
+.plan-list{gap:8px}.plan,.event{background:#fffaf9;border:1px solid #e7cbc5;border-radius:4px;padding:11px}.plan input[type=checkbox]{border-radius:2px;border-color:#e5a89b}.plan input:checked{background:#71917b;border-color:#71917b}.plan-title{font-size:12px}.plan-note,.event-tag{font-size:10px}.field{border:1px solid #d9b0a8;border-radius:3px;background:#fffaf9;font-family:inherit;font-size:12px;padding:11px;color:#4e3937}.field:focus{border-color:#e98c79;box-shadow:0 0 0 2px #f8c7bb}.field::placeholder{color:#bba19b}textarea.field{min-height:72px}.primary{background:#f28e7b;color:#fff;border:1px solid #c87466;border-radius:3px;box-shadow:inset 0 -3px 0 #d56e60;font-family:inherit;font-size:11px}.primary:hover{background:#eb806e}.soft-btn{border-radius:3px}.empty{border:1px dashed #d9b0a8;border-radius:4px;font-size:11px;color:#a7837d}.thought-form{background:#f3e5e2;border:1px solid #e3c1b8;border-radius:4px;padding:12px}.small-label{font-size:10px;color:#997a74}.timeline{gap:10px}.timeline:before{background:#e4b8ad;width:2px}.event:before{background:#f28e7b;border-radius:1px;box-shadow:0 0 0 2px #f8f3f2,0 0 0 3px #dca59a}.event-time{background:#f7d2c9;color:#965b53;border-radius:3px;font-size:10px}.event-text{font-size:12px}.execute-banner{background:#eaf0e9;border:1px solid #b7cabb;color:#597563;border-radius:4px;font-size:11px}.execute-banner strong{font-size:12px}.mini-btn{color:#a66c62;font-family:inherit}.mini-btn:hover{background:#f8ded7}.footer{font-family:ui-monospace,monospace;font-size:9px;letter-spacing:.08em;color:#865f58}.footer span{color:#f7eee9}.toast{border:2px solid #8c6059;border-radius:3px;background:#f8f1f0;color:#6f4944;font-family:ui-monospace,monospace;font-size:11px;box-shadow:3px 3px 0 #b98479}
+@media(max-width:760px){.shell{padding:14px 10px 30px}.hero{padding:16px}.hero-top{display:block}.hero h2{font-size:20px}.mode-switch{margin-top:14px}.panel{padding:14px}.brand h1{font-size:16px}.date-chip{font-size:10px}.grid{grid-template-columns:1fr}}
+
+
+.focus-panel{margin-bottom:10px}.focus-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px}.focus-clock,.average-box{background:#f3e5e2;border:1px solid #e3c1b8;padding:16px;border-radius:4px}.clock-label{font-size:10px;color:#997a74;letter-spacing:.06em}.clock-value{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:.04em;color:#86564f;margin:7px 0 12px;font-variant-numeric:tabular-nums}.average-value{font-size:25px;font-weight:800;color:#86564f;margin:8px 0}.focus-actions,.rescue-actions{display:flex;gap:8px;flex-wrap:wrap}.procrastination{margin-top:16px;padding-top:15px;border-top:1px dashed #d9b0a8;display:grid;gap:12px}.procrastination h3{margin:0}.rescue-actions{margin-top:8px}.countdown{background:#fffaf9;border:1px solid #e7cbc5;padding:14px;border-radius:4px;width:max-content;max-width:100%}.stretch-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stretch-card{background:#fffaf9;border:1px solid #e7cbc5;padding:12px;border-radius:4px;font-size:12px;line-height:1.6}.stretch-card strong{display:block;color:#965b53;margin-bottom:4px}.focus-panel .primary,.focus-panel .soft-btn{padding:10px 12px}.hide{display:none!important}
+@media(max-width:650px){.focus-layout{grid-template-columns:1fr}.stretch-list{grid-template-columns:1fr}.focus-actions button{flex:1}}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="brand"><div class="logo">▣</div><div><h1>DAY LOG</h1><p>PLAN MODE / ACTION MODE</p></div></div>
+ <div class="date-chip" id="todayLabel">今天 · --</div>
+</header>
+<section class="hero">
+ <div class="hero-top"><div><div class="eyebrow">MY GENTLE PRODUCTIVITY</div><h2 id="heroTitle">先整理，再開始。</h2><p id="heroDesc">計畫時允許自己想很多；執行時，把注意力交給眼前的一步。</p></div>
+ <div class="mode-switch" role="group" aria-label="狀態切換"><button id="planningBtn" class="active">▤ 計畫</button><button id="doingBtn">▶ 執行</button></div></div>
+ <div class="rule" id="modeRule"><strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。</div>
+</section>
+<div class="grid">
+<section class="panel">
+ <div class="panel-head"><div><h3>▤ 今日執行清單</h3><div class="sub">只放今天真的要做的事，最多 3 件</div></div><div class="count" id="planCount">0 / 3</div></div>
+ <div class="plan-list" id="planList"></div>
+ <form class="add-plan" id="planForm"><input class="field" id="planInput" maxlength="120" placeholder="例如：去圖書館完成報告…" aria-label="新增今日計畫"><button class="primary" type="submit">＋ 加入</button></form>
+ <div class="sub" style="margin-top:12px">小提醒：不是所有想法都要立刻變成任務。</div>
+</section>
+<section class="panel" id="thoughtPanel">
+ <div class="panel-head"><div><h3>◷ 想法紀錄</h3><div class="sub" id="thoughtPanelSub">記錄想法出現的時間，不急著處理</div></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end"><select class="field" id="thoughtDateSelect" aria-label="查看哪一天的想法" style="width:auto;max-width:150px;padding:8px 10px;font-size:12px"></select><div class="count" id="thoughtCount">0 則</div></div></div>
+ <div class="execute-banner hide" id="executeNotice"><strong>♥ 現在是執行時間</strong>先把注意力留給手上的任務。突然冒出的想法可以快速記下，先不展開分析；你不需要現在解決它。</div>
+ <form class="thought-form" id="thoughtForm">
+  <div class="form-row"><label class="small-label" for="thoughtTime">想法出現時間</label><input class="field" id="thoughtTime" type="time" required></div>
+  <div><label class="small-label" for="thoughtInput">剛剛想到什麼？</label><textarea class="field" id="thoughtInput" maxlength="800" placeholder="例如：我想利用學校資源學些什麼……" required></textarea></div>
+  <div class="form-row"><label class="small-label" for="thoughtType">想法類型</label><select class="field" id="thoughtType"><option>靈感</option><option>待思考</option><option>生活觀察</option><option>未來計畫</option><option>情緒 / 感受</option></select></div>
+  <div class="form-actions"><span>記錄下來，就不用一直在腦中提醒自己。</span><button class="primary" type="submit" id="thoughtSubmit">記下這個想法</button></div>
+ </form>
+ <div class="timeline" id="timeline"></div>
+ <div class="empty hide" id="thoughtEmpty">今天的時間條還是空白的。<br>有想法時，再來放一朵小花吧 ✦</div>
+</section>
+</div>
+<section class="panel focus-panel hide" id="focusPanel" style="margin-top:15px">
+ <div class="panel-head"><div><h3>▶ 執行計時器</h3><div class="sub">開始做事時按下開始；休息或切換任務時暫停</div></div><div class="count" id="focusStatus">尚未開始</div></div>
+ <div class="focus-layout">
+  <div class="focus-clock"><div class="clock-label">本次執行時間</div><div class="clock-value" id="focusClock">00:00:00</div><div class="focus-actions"><button class="primary" id="startFocus">▶ 開始計時</button><button class="soft-btn" id="stopFocus">■ 停止並記錄</button></div></div>
+  <div class="average-box"><div class="clock-label">每日平均執行時間</div><div class="average-value" id="averageTime">0 分鐘</div><div class="sub">以最近 7 天有紀錄的日期計算</div><div class="sub" id="averageDetail">目前尚無執行紀錄</div></div>
+ </div>
+ <div class="procrastination">
+  <div><h3>▣ 拖延急救</h3><div class="sub">不用等到有動力，先做一個很小的開始。</div></div>
+  <div class="rescue-actions"><button class="primary" id="startTen">▶ 開始 10 分鐘倒數</button><button class="soft-btn" id="randomStretch">⟳ 隨機 3 個伸展動作</button></div>
+  <div class="countdown hide" id="countdownBox"><div class="clock-label">只要先開始 10 分鐘</div><div class="clock-value" id="countdownClock">10:00</div><button class="soft-btn" id="cancelCountdown">取消倒數</button></div>
+  <div class="stretch-list" id="stretchList"><div class="empty">卡住時，按「隨機 3 個伸展動作」讓身體先動起來。</div></div>
+ </div>
+</section>
+<div class="footer">SAVE YOUR THOUGHTS. KEEP MOVING. <span>♥</span> LOCAL DATA</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const STORAGE_KEY = 'rose-routine-v1';
+ let mode = 'planning';
+ let data = {};
+ const now = new Date();
+ const dateKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ let today = dateKey(new Date());
+ const timeNow = () => `${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}`;
+ const freshDay = () => ({plans:[],thoughts:[],focusMs:0,focusSessions:[]});
+ try {
+   const saved = window.localStorage.getItem(STORAGE_KEY);
+   data = saved ? (JSON.parse(saved) || {}) : {};
+ } catch(e) {
+   data = {};
+ }
+ if (!data[today]) data[today] = freshDay();
+ const pruneOldDays = () => { const keep = Object.keys(data).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-7); Object.keys(data).forEach(k => { if (!keep.includes(k)) delete data[k]; }); };
+ pruneOldDays();
+ const day = () => { if (!data[today]) data[today] = freshDay(); const d=data[today]; if(!Array.isArray(d.plans))d.plans=[]; if(!Array.isArray(d.thoughts))d.thoughts=[]; if(!Array.isArray(d.focusSessions))d.focusSessions=[]; if(typeof d.focusMs!=='number')d.focusMs=0; return d; };
+ const save = () => {
+   try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+   catch(e) { toast('瀏覽器暫時無法保存資料；請下載檔案後用 Chrome 或 Edge 開啟。'); }
+ };
+ const toast = msg => { const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove('show'),2200); };
+ const escapeHtml = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ $('todayLabel').textContent = `今天 · ${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()}`;
+ $('thoughtTime').value = timeNow();
+ function refreshClock(){ const d=new Date(); const key=dateKey(d); $('todayLabel').textContent=`今天 · ${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}　${timeNow()}`; if(document.activeElement!==$('thoughtTime')) $('thoughtTime').value=timeNow(); if(key!==today){today=key;if(!data[today])data[today]=freshDay();pruneOldDays();save();renderPlans();renderThoughts();} updateFocusUI(); }
+ setInterval(refreshClock,1000);
+ function setMode(next) {
+   mode=next;
+   $('planningBtn').classList.toggle('active',mode==='planning');
+   $('doingBtn').classList.toggle('active',mode==='doing');
+   $('heroTitle').textContent = mode==='planning' ? '先整理，再開始。' : '現在，不用想得更完美。';
+   $('heroDesc').textContent = mode==='planning' ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了。接下來只要做眼前的一步，不需要一直重新檢討。';
+   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不分析、不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
+   $('executeNotice').classList.add('hide');
+   $('thoughtInput').placeholder = '例如：我想利用學校資源學些什麼……';
+   $('thoughtSubmit').textContent = '記下這個想法';
+   $('planInput').disabled = mode==='doing';
+   $('planForm').classList.toggle('hide',mode==='doing');
+   $('thoughtPanel').classList.toggle('hide',mode!=='planning');
+   $('focusPanel').classList.toggle('hide',mode!=='doing');
+   renderPlans();
+ }
+ let focusInterval=null, focusStartedAt=null, focusBaseMs=0, countdownEndsAt=null, countdownInterval=null;
+ const fmt = ms => { ms=Math.max(0,Math.floor(ms/1000)); const h=Math.floor(ms/3600),m=Math.floor((ms%3600)/60),sec=ms%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; };
+ const currentFocusMs = () => focusBaseMs + (focusStartedAt ? Date.now()-focusStartedAt : 0);
+ function updateFocusUI(){ $('focusClock').textContent=fmt(currentFocusMs()); $('focusStatus').textContent=focusStartedAt?'計時中':'尚未計時'; const days=Object.keys(data).sort().slice(-7); const vals=days.map(k=>({k,ms:(data[k]?.focusMs||0)+(k===today?currentFocusMs():0)})); const active=vals.filter(x=>x.ms>0); const avg=active.length?active.reduce((a,x)=>a+x.ms,0)/active.length:0; const mins=Math.round(avg/60000); $('averageTime').textContent=mins>=60?`${Math.floor(mins/60)} 小時 ${mins%60} 分鐘`:`${mins} 分鐘`; $('averageDetail').textContent=active.length?`最近 7 天，共 ${active.length} 天有執行紀錄`:'目前尚無執行紀錄'; }
+ $('startFocus').addEventListener('click',()=>{if(focusStartedAt)return;focusStartedAt=Date.now();$('focusStatus').textContent='計時中';updateFocusUI();toast('開始執行，先專注眼前這一步。');});
+ $('stopFocus').addEventListener('click',()=>{if(!focusStartedAt){toast('你還沒有開始計時。');return;} const elapsed=Date.now()-focusStartedAt; day().focusMs=(day().focusMs||0)+elapsed; day().focusSessions.push({start:new Date(focusStartedAt).toISOString(),end:new Date().toISOString(),ms:elapsed});focusStartedAt=null;focusBaseMs=0;save();updateFocusUI();toast(`已記錄 ${Math.round(elapsed/60000)} 分鐘執行時間。`);});
+ const stretches=[['肩頸放鬆','肩膀向上聳起再放下，慢慢重複 8 次。'],['坐姿伸展','坐直，雙手向上延伸，保持 15 秒。'],['手腕活動','手腕輕輕畫圈，左右各 10 秒。'],['胸口打開','雙手放到身後或腰側，輕輕打開胸口 15 秒。'],['站立伸展','站起來伸個懶腰，手臂向上延伸 15 秒。'],['小腿伸展','扶穩桌面，一腳向後踩穩，左右各 15 秒。'],['肩膀繞圈','肩膀往後慢慢繞圈 8 次，再往前 8 次。'],['眼睛休息','看向遠方約 20 秒，讓視線離開螢幕。']];
+ $('randomStretch').addEventListener('click',()=>{const picks=[...stretches].sort(()=>Math.random()-.5).slice(0,3);$('stretchList').innerHTML=picks.map((x,i)=>`<div class="stretch-card"><strong>${i+1}. ${x[0]}</strong>${x[1]}</div>`).join('');});
+ $('startTen').addEventListener('click',()=>{if(countdownInterval)clearInterval(countdownInterval);countdownEndsAt=Date.now()+10*60*1000;$('countdownBox').classList.remove('hide');const tick=()=>{const left=Math.max(0,countdownEndsAt-Date.now());$('countdownClock').textContent=`${String(Math.floor(left/60000)).padStart(2,'0')}:${String(Math.floor(left%60000/1000)).padStart(2,'0')}`;if(left<=0){clearInterval(countdownInterval);countdownInterval=null;countdownEndsAt=null;toast('10 分鐘到了！做得很好，接著決定要繼續或休息。');}};tick();countdownInterval=setInterval(tick,250);toast('倒數開始：先做 10 分鐘就好。');});
+ $('cancelCountdown').addEventListener('click',()=>{if(countdownInterval)clearInterval(countdownInterval);countdownInterval=null;countdownEndsAt=null;$('countdownBox').classList.add('hide');});
+ function renderPlans() {
+   const list=$('planList'); list.innerHTML='';
+   $('planCount').textContent=`${day().plans.filter(p=>p.done).length} / ${day().plans.length} 完成`;
+   if(!day().plans.length) list.innerHTML='<div class="empty">今天還沒有安排任務。<br>挑 1～3 件真正重要的事就好 ·</div>';
+   day().plans.forEach((p,i)=>{
+    const item=document.createElement('div'); item.className='plan'+(p.done?' done':'');
+    item.innerHTML=`<input type="checkbox" aria-label="完成任務" ${p.done?'checked':''}><div class="plan-body"><div class="plan-title">${escapeHtml(p.title)}</div>${p.note?`<div class="plan-note">${escapeHtml(p.note)}</div>`:''}</div><button class="mini-btn" title="刪除任務" aria-label="刪除任務">×</button>`;
+    item.querySelector('input').addEventListener('change',e=>{p.done=e.target.checked;save();renderPlans();});
+    item.querySelector('button').addEventListener('click',()=>{day().plans.splice(i,1);save();renderPlans();toast('已移除這件任務');});
+    list.appendChild(item);
+   });
+   $('planInput').placeholder=day().plans.length>=3?'今天已經有 3 件事了，先完成它們吧 ♥':'例如：去圖書館完成報告…';
+ }
+ function renderThoughtDateOptions() {
+   const sel=$('thoughtDateSelect');
+   const prior=sel.value;
+   const keys=Object.keys(data).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-7).reverse();
+   sel.innerHTML=keys.map(k=>{
+     const parts=k.split('-'); const label=`${Number(parts[1])}/${Number(parts[2])}${k===today?'（今天）':''}`;
+     return `<option value="${k}">${label}</option>`;
+   }).join('');
+   if(keys.includes(prior)) sel.value=prior;
+   else sel.value=today;
+ }
+ function renderThoughts() {
+   renderThoughtDateOptions();
+   const list=$('timeline'); list.innerHTML='';
+   const selectedDate=$('thoughtDateSelect').value || today;
+   const selectedDay=data[selectedDate] || freshDay();
+   const thoughts=[...(selectedDay.thoughts||[])].sort((a,b)=>a.time.localeCompare(b.time));
+   const parts=selectedDate.split('-');
+   $('thoughtPanelSub').textContent=`${Number(parts[1])}/${Number(parts[2])} 的想法紀錄 · 可查看最近 7 天`;
+   $('thoughtCount').textContent=`${thoughts.length} 則`;
+   $('thoughtEmpty').classList.toggle('hide',thoughts.length!==0);
+   $('thoughtEmpty').innerHTML=selectedDate===today?'今天還沒有想法紀錄。<br>有想法時，可以在這裡記下來。':'這一天沒有保存想法紀錄。';
+   thoughts.forEach(t=>{
+    const el=document.createElement('article');el.className='event';
+    el.innerHTML=`<div class="event-top"><span class="event-time">${escapeHtml(t.time)}</span><button class="mini-btn" title="刪除此想法" aria-label="刪除此想法">×</button></div><div class="event-text">${escapeHtml(t.text)}</div><div class="event-tag">· ${escapeHtml(t.type)}</div>`;
+    el.querySelector('button').addEventListener('click',()=>{selectedDay.thoughts=selectedDay.thoughts.filter(x=>x.id!==t.id);save();renderThoughts();toast('已刪除這則想法');});
+    list.appendChild(el);
+   });
+ }
+ $('thoughtDateSelect').addEventListener('change',renderThoughts);
+ $('planForm').addEventListener('submit',e=>{
+   e.preventDefault();
+   try {
+     const title=$('planInput').value.trim();
+     if(!title){toast('先輸入一件今天想做的事喔 ♥');$('planInput').focus();return;}
+     if(day().plans.length>=3){toast('今天先維持 1～3 件重點任務就好 ♥');return;}
+     day().plans.push({id:Date.now(),title,done:false});
+     $('planInput').value='';
+     save();renderPlans();toast('已加入今日清單 ✦');
+   } catch(err) { console.error(err); toast('新增任務失敗，請重新整理網頁再試一次。'); }
+ });
+ $('thoughtForm').addEventListener('submit',e=>{
+   e.preventDefault();
+   try {
+     const text=$('thoughtInput').value.trim();
+     if(!text){toast('先寫下一個想法再記錄喔 ♥');$('thoughtInput').focus();return;}
+     day().thoughts.push({id:Date.now()+Math.random(),time:$('thoughtTime').value || timeNow(),text,type:$('thoughtType').value});
+     $('thoughtInput').value='';
+     $('thoughtTime').value=timeNow();
+     save();renderThoughts();toast(mode==='doing'?'想法已收好，回到眼前這一步 ♥':'想法已放進時間條 ✦');
+   } catch(err) { console.error(err); toast('記錄想法失敗，請重新整理網頁再試一次。'); }
+ });
+ $('planningBtn').addEventListener('click',()=>setMode('planning'));
+ $('doingBtn').addEventListener('click',()=>setMode('doing'));
+ renderPlans();renderThoughts();setMode('planning');updateFocusUI();refreshClock();
+ // A visible startup confirmation helps distinguish a loaded page from a static preview.
+ document.documentElement.dataset.appReady = 'true';
+})();
+</script>
+</body>
+</html>
