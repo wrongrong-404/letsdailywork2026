@@ -145,7 +145,7 @@ header{margin-bottom:15px}.brand{gap:10px}.logo{border-radius:5px;background:#f2
    $('doingBtn').classList.toggle('active',mode==='doing');
    $('heroTitle').textContent = mode==='planning' ? '寫下今天一定要做的3件事，再開始。' : '現在，只要先開始5分鐘就好。';
    $('heroDesc').textContent = mode==='planning' ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了。接下來只要做眼前的一步，不需要一直重新檢討。';
-   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必重新評估整個人生，只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
+   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
    $('executeNotice').classList.add('hide');
    $('thoughtInput').placeholder = '例如：等下想去買麻辣燙……';
    $('thoughtSubmit').textContent = '記下這個想法';
