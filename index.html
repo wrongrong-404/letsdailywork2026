@@ -849,6 +849,39 @@ textarea.field {
   .focus-actions button { flex: 1; }
   .chart-container { gap: 4px; }
 }
+
+/* 2026 refresh: clearer reading, calmer hierarchy, stronger mobile controls */
+:root { --shadow: 3px 3px 0 rgba(125,78,72,.22); }
+body { font-family: ui-monospace, "Noto Sans TC", "Microsoft JhengHei", monospace; line-height: 1.55; }
+.shell { max-width: 1080px; }
+.panel { border-width: 2px; border-radius: 12px; box-shadow: var(--shadow); }
+.hero { border-radius: 14px; }
+.sub, .plan-note, .small-label, .form-actions, .empty { font-size: 12px; line-height: 1.65; }
+.plan-title { font-size: 14px; line-height: 1.5; }
+.plan-note { font-size: 12px; }
+.field, input, textarea, select { font-size: 14px; }
+button { min-height: 38px; }
+.mini-btn { min-width: 34px; min-height: 34px; }
+.panel-head { align-items: flex-start; }
+.focus-clock, .quick-start-box { border-radius: 12px; }
+.toast { font-size: 13px; border-radius: 10px; max-width: calc(100vw - 28px); text-align: center; }
+:focus-visible { outline: 3px solid #c56c5c; outline-offset: 3px; }
+@media (max-width: 760px) {
+  .shell { padding: 12px 12px 28px; }
+  .panel { padding: 16px; }
+  .hero { padding: 18px 16px; }
+  .hero h2 { line-height: 1.35; }
+  .mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mode-switch button { min-height: 44px; }
+  .add-plan { flex-direction: column; }
+  .add-plan button { width: 100%; }
+  .plan { gap: 10px; }
+  .plan-controls { flex-wrap: wrap; }
+  .focus-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .focus-actions button { min-height: 44px; }
+  .clock-value { font-size: clamp(30px, 9vw, 46px); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
 </style>
 </head>
 <body>
@@ -1084,6 +1117,7 @@ textarea.field {
  /* 計時器核心狀態變數 */
  let focusStartedAt = null;
  let focusAccumulatedMs = 0;
+ let focusSegments = []; // 實際開始／暫停區間，避免把暫停時間算進專注
  let isPaused = false;
  let breakEndsAt = null;
  let countdownEndsAt = null;
@@ -1091,11 +1125,26 @@ textarea.field {
  let lastPomodoroCycles = 0;
  let pendingBreakMinutes = 5;
 
+ // 統一處理專注暫停與區間記錄，避免漏記 focusSegments
+ function pauseFocusTimer() {
+   if (focusStartedAt) {
+     const nowTs = Date.now();
+     if (nowTs > focusStartedAt) {
+       focusSegments.push({ start: focusStartedAt, end: nowTs });
+       focusAccumulatedMs += (nowTs - focusStartedAt);
+     }
+     focusStartedAt = null;
+     isPaused = true;
+   }
+   twoMinTimerEndsAt = null; // 暫停時一併取消未完成的 2 分鐘衝刺倒數
+ }
+
  // 將活動狀態寫入 localStorage 防止重整遺失
  function persistTimerState() {
    const state = {
      focusStartedAt,
      focusAccumulatedMs,
+     focusSegments,
      isPaused,
      breakEndsAt,
      countdownEndsAt,
@@ -1119,6 +1168,7 @@ textarea.field {
 
      focusStartedAt = st.focusStartedAt || null;
      focusAccumulatedMs = st.focusAccumulatedMs || 0;
+     focusSegments = Array.isArray(st.focusSegments) ? st.focusSegments.filter(x => x && Number.isFinite(x.start) && Number.isFinite(x.end) && x.end > x.start) : [];
      isPaused = !!st.isPaused;
      breakEndsAt = st.breakEndsAt || null;
      countdownEndsAt = st.countdownEndsAt || null;
@@ -1240,27 +1290,38 @@ textarea.field {
 
  /* 即時監聽時鐘：若在執行中跨越午夜，自動結算前一天並換日 */
  function handleMidnightRollover(prevKey, newKey) {
+   const nowTs = Date.now();
    if (focusStartedAt) {
-     const nowTs = Date.now();
-     splitAndRecordInterval(focusStartedAt - focusAccumulatedMs, nowTs);
-     focusAccumulatedMs = 0;
-     focusStartedAt = nowTs;
+     if (nowTs > focusStartedAt) {
+       focusSegments.push({ start: focusStartedAt, end: nowTs });
+       focusAccumulatedMs += (nowTs - focusStartedAt);
+     }
+   }
+   
+   if (focusSegments.length > 0) {
+     focusSegments.forEach(seg => splitAndRecordInterval(seg.start, seg.end));
    } else if (focusAccumulatedMs > 0) {
      const targetDay = day(prevKey);
      targetDay.focusMs = (targetDay.focusMs || 0) + focusAccumulatedMs;
-     focusAccumulatedMs = 0;
-     isPaused = false;
      save();
+   }
+   
+   // 切換跨日後將暫存區段歸零重算
+   focusSegments = [];
+   focusAccumulatedMs = 0;
+   if (focusStartedAt) {
+     focusStartedAt = nowTs;
    } else {
      isPaused = false;
    }
+   
    today = newKey;
    if (!data[today]) data[today] = freshDay();
    save();
    persistTimerState();
    renderPlans();
    renderThoughts();
-   toast('跨越午夜，已自動將昨日工時記錄歸檔！');
+   toast('已切換到新的一天；昨日專注紀錄已結算歸檔。');
  }
 
  function refreshClock(){
@@ -1408,9 +1469,7 @@ textarea.field {
  $('toggleFocusBtn').addEventListener('click', () => {
    requestNotify();
    if (focusStartedAt) {
-     focusAccumulatedMs += (Date.now() - focusStartedAt);
-     focusStartedAt = null;
-     isPaused = true;
+     pauseFocusTimer();
      toast('已暫停計時。');
    } else {
      focusStartedAt = Date.now();
@@ -1427,15 +1486,18 @@ textarea.field {
      toast('目前沒有正在進行的執行紀錄。');
      return;
    }
-   const nowTs = Date.now();
-   const sessionMs = currentFocusMs();
+   const sessionMs = currentFocusMs(); // 記錄計算當下的總累計
    
-   // 依據純專注時長推算真實工時區間，避免暫停期間被算入
-   const startTs = nowTs - sessionMs;
-   splitAndRecordInterval(startTs, nowTs);
+   const nowTs = Date.now();
+   if (focusStartedAt && nowTs > focusStartedAt) {
+     focusSegments.push({ start: focusStartedAt, end: nowTs });
+   }
+   // 將各段實際執行區間分別記錄，絕不以總時長倒推而包含暫停時間。
+   focusSegments.forEach(seg => splitAndRecordInterval(seg.start, seg.end));
 
    focusStartedAt = null;
    focusAccumulatedMs = 0;
+   focusSegments = [];
    isPaused = false;
    lastPomodoroCycles = 0;
 
@@ -1479,11 +1541,7 @@ textarea.field {
 
  function startBreak(minutes){
    hidePomodoroPopup();
-   if (focusStartedAt) {
-     focusAccumulatedMs += (Date.now() - focusStartedAt);
-     focusStartedAt = null;
-     isPaused = true;
-   }
+   pauseFocusTimer();
    breakEndsAt = Date.now() + minutes * 60 * 1000;
    $('breakStatus').textContent = `休息倒數中：${minutes} 分鐘（專注計時已暫停）。`;
    $('breakActionGroup').classList.remove('hide');
@@ -1547,18 +1605,13 @@ textarea.field {
 
  $('startTen').addEventListener('click', () => {
    requestNotify();
-   if (focusStartedAt) {
-     focusAccumulatedMs += (Date.now() - focusStartedAt);
-     focusStartedAt = null;
-     isPaused = true;
-     updateFocusUI();
-   }
+   pauseFocusTimer();
    day().distractionCount = (Number(day().distractionCount) || 0) + 1;
    save();
-   updateFocusUI();
    countdownEndsAt = Date.now() + 10 * 60 * 1000;
    $('countdownBox').classList.remove('hide');
    $('distractionChoiceBox').classList.add('hide');
+   updateFocusUI();
    updateTabTitle();
    persistTimerState();
    toast('已記錄 1 次分心，專注碼錶已暫停。');
@@ -1810,19 +1863,40 @@ textarea.field {
    reader.onload = ev => {
      try {
        const parsed = JSON.parse(ev.target.result);
-       if(typeof parsed === 'object' && parsed !== null) {
+       if(typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) && Object.values(parsed).every(v => v && typeof v === 'object' && !Array.isArray(v))) {
          const shouldMerge = confirm("想要「合併」備份資料嗎？\n\n【確定】：合併（保留現有資料並補入未重複的日期與紀錄）\n【取消】：完全覆蓋現有資料");
          if (shouldMerge) {
            Object.keys(parsed).forEach(k => {
              if (!data[k]) {
                data[k] = parsed[k];
              } else {
-               const existingPlanIds = new Set(data[k].plans.map(p => p.id));
-               (parsed[k].plans || []).forEach(p => { if (!existingPlanIds.has(p.id)) data[k].plans.push(p); });
-               const existingThoughtIds = new Set(data[k].thoughts.map(t => t.id));
-               (parsed[k].thoughts || []).forEach(t => { if (!existingThoughtIds.has(t.id)) data[k].thoughts.push(t); });
-               data[k].focusMs = Math.max(data[k].focusMs || 0, parsed[k].focusMs || 0);
-               data[k].distractionCount = Math.max(data[k].distractionCount || 0, parsed[k].distractionCount || 0);
+               const current = data[k] && typeof data[k] === 'object' ? data[k] : freshDay();
+               const incoming = parsed[k] && typeof parsed[k] === 'object' ? parsed[k] : {};
+               if (!Array.isArray(current.plans)) current.plans = [];
+               if (!Array.isArray(current.thoughts)) current.thoughts = [];
+               if (!Array.isArray(current.focusSessions)) current.focusSessions = [];
+               const incomingPlans = Array.isArray(incoming.plans) ? incoming.plans : [];
+               const incomingThoughts = Array.isArray(incoming.thoughts) ? incoming.thoughts : [];
+               const existingPlanIds = new Set(current.plans.map(p => p && p.id));
+               incomingPlans.forEach(p => { if (p && !existingPlanIds.has(p.id)) { current.plans.push(p); existingPlanIds.add(p.id); } });
+               const existingThoughtIds = new Set(current.thoughts.map(t => t && t.id));
+               incomingThoughts.forEach(t => { if (t && !existingThoughtIds.has(t.id)) { current.thoughts.push(t); existingThoughtIds.add(t.id); } });
+               
+               const sessionKey = x => `${x.start || ''}|${x.end || ''}|${x.ms || 0}`;
+               const existingSessionIds = new Set(current.focusSessions.map(sessionKey));
+               (Array.isArray(incoming.focusSessions) ? incoming.focusSessions : []).forEach(x => {
+                 if (x && !existingSessionIds.has(sessionKey(x))) {
+                   current.focusSessions.push(x); existingSessionIds.add(sessionKey(x));
+                 }
+               });
+               
+               if (current.focusSessions.length > 0) {
+                 current.focusMs = current.focusSessions.reduce((sum, s) => sum + (Number(s.ms) || 0), 0);
+               } else {
+                 current.focusMs = Math.max(Number(current.focusMs) || 0, Number(incoming.focusMs) || 0);
+               }
+               current.distractionCount = Math.max(Number(current.distractionCount) || 0, Number(incoming.distractionCount) || 0);
+               data[k] = current;
              }
            });
            toast('資料已順利合併完成！');
