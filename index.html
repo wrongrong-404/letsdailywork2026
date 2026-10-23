@@ -892,7 +892,7 @@ textarea.field {
    <button class="btn-two-min" id="btnTwoMin">⚡ 先做 2 分鐘</button>
  </div>
 
- <div class="panel-head"><div><h3>▶ 執行計時器</h3><div class="sub">支援跨午夜精確切割紀錄；關閉或重新整理自動保存</div></div><div class="count" id="focusStatus">尚未開始</div></div>
+ <div class="panel-head"><div><h3>▶ 執行計時器</h3><div class="sub">支援跨午夜切割紀錄；關閉或重新整理自動保存</div></div><div class="count" id="focusStatus">尚未開始</div></div>
  
  <div class="focus-layout">
   <div class="focus-clock">
@@ -919,7 +919,7 @@ textarea.field {
   <div class="chart-header">
     <div>
       <div class="clock-label">近 7 天執行時間比較</div>
-      <div class="sub" style="margin:2px 0 0">每日純專注時數趨勢（精確至秒）</div>
+      <div class="sub" style="margin:2px 0 0">每日專注時數</div>
     </div>
   </div>
   <div class="chart-container" id="barChartContainer"></div>
@@ -1260,7 +1260,7 @@ textarea.field {
    persistTimerState();
    renderPlans();
    renderThoughts();
-   toast('跨越午夜，已自動將昨日工時精確結算歸檔！');
+   toast('跨越午夜，已自動將昨日工時記錄歸檔！');
  }
 
  function refreshClock(){
@@ -1449,7 +1449,7 @@ textarea.field {
    persistTimerState();
    updateFocusUI();
    updateTabTitle();
-   toast(`本次專注結束，已精確記錄 ${fmtFull(sessionMs)}。`);
+   toast(`本次專注結束，已記錄 ${fmtFull(sessionMs)}。`);
  }
  $('stopFocusBtn').addEventListener('click', stopAndRecordFocus);
 
