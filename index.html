@@ -742,8 +742,43 @@ textarea.field {
 }
 
 /* ==========================================================================
-   9. 頁尾、備份資訊與彈窗
+   9. 彈窗 Modal、頁尾、備份資訊與 Toast
    ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(78, 57, 55, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  background: #f8f3f2;
+  border: 3px solid #8c6059;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 #8c6059;
+  padding: 24px 22px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  animation: modalPopIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes modalPopIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .footer {
   font-family: ui-monospace, monospace;
   font-size: 10px;
@@ -787,7 +822,7 @@ textarea.field {
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s;
-  z-index: 5;
+  z-index: 110;
 }
 
 .toast.show {
@@ -891,12 +926,8 @@ textarea.field {
  </div>
 
  <div class="countdown" id="pomodoroPrompt" style="margin-top:14px">
-  <div class="clock-label">番茄鐘提醒（休息期間專注計時器會完全暫停）</div>
-  <div id="pomodoroMessage">開始計時後，每累積 25 分鐘會主動提醒休息。</div>
-  <div class="rescue-actions" style="margin-top:10px">
-    <button class="soft-btn hide" id="takeShortBreak">休息 5 分鐘</button>
-    <button class="soft-btn hide" id="takeLongBreak">休息 20 分鐘</button>
-  </div>
+  <div class="clock-label">番茄鐘狀態（休息期間專注計時器會完全暫停）</div>
+  <div id="pomodoroMessage">開始計時後，每累積 25 分鐘會彈窗主動提醒休息。</div>
   <div class="sub" id="breakStatus" style="margin-top:8px"></div>
   <div class="rescue-actions hide" id="breakActionGroup" style="margin-top:10px">
     <button class="primary" id="resumeFromBreakBtn">▶ 結束休息，繼續專注</button>
@@ -942,6 +973,20 @@ textarea.field {
   </div>
  </div>
 </section>
+
+<!-- 番茄鐘彈出式視窗 (Popup Modal) -->
+<div class="modal-backdrop hide" id="pomodoroModal" role="dialog" aria-modal="true" aria-labelledby="modalPomodoroTitle">
+  <div class="modal-card">
+    <div style="font-size:32px;margin-bottom:8px">🍅</div>
+    <h3 id="modalPomodoroTitle" style="font-size:17px;color:#86564f;margin:0 0 8px">番茄鐘達成！</h3>
+    <p id="modalPomodoroDesc" style="font-size:12px;color:#6e4d46;line-height:1.6;margin:0 0 18px">已經專注了 25 分鐘，給自己一段放鬆時間吧！</p>
+    <div class="focus-actions" style="justify-content:center;gap:8px">
+      <button class="primary" id="modalTakeBreakBtn">☕ 休息 5 分鐘</button>
+      <button class="soft-btn" id="modalSkipBreakBtn">▶ 繼續專注</button>
+      <button class="mini-btn" id="modalStopFocusBtn" style="padding:8px 12px;font-size:11px">■ 結束並記錄</button>
+    </div>
+  </div>
+</div>
 
 <div class="footer">
  <div>SAVE YOUR THOUGHTS. KEEP MOVING. <span>♥</span> LOCAL DATA</div>
@@ -1044,6 +1089,7 @@ textarea.field {
  let countdownEndsAt = null;
  let twoMinTimerEndsAt = null;
  let lastPomodoroCycles = 0;
+ let pendingBreakMinutes = 5;
 
  // 將活動狀態寫入 localStorage 防止重整遺失
  function persistTimerState() {
@@ -1054,6 +1100,7 @@ textarea.field {
      breakEndsAt,
      countdownEndsAt,
      twoMinTimerEndsAt,
+     lastPomodoroCycles,
      mode,
      updatedAt: Date.now()
    };
@@ -1076,6 +1123,7 @@ textarea.field {
      breakEndsAt = st.breakEndsAt || null;
      countdownEndsAt = st.countdownEndsAt || null;
      twoMinTimerEndsAt = st.twoMinTimerEndsAt || null;
+     lastPomodoroCycles = st.lastPomodoroCycles || 0;
 
      if (countdownEndsAt && countdownEndsAt > Date.now()) {
        $('countdownBox').classList.remove('hide');
@@ -1194,16 +1242,17 @@ textarea.field {
  function handleMidnightRollover(prevKey, newKey) {
    if (focusStartedAt) {
      const nowTs = Date.now();
-     // 結算截至午夜前的區間
      splitAndRecordInterval(focusStartedAt - focusAccumulatedMs, nowTs);
      focusAccumulatedMs = 0;
-     focusStartedAt = nowTs; // 重新以新一天的起點開始計時
+     focusStartedAt = nowTs;
    } else if (focusAccumulatedMs > 0) {
-     // 處於暫停狀態跨日
      const targetDay = day(prevKey);
      targetDay.focusMs = (targetDay.focusMs || 0) + focusAccumulatedMs;
      focusAccumulatedMs = 0;
+     isPaused = false;
      save();
+   } else {
+     isPaused = false;
    }
    today = newKey;
    if (!data[today]) data[today] = freshDay();
@@ -1237,7 +1286,7 @@ textarea.field {
    mode = next;
    $('planningBtn').classList.toggle('active', mode==='planning');
    $('doingBtn').classList.toggle('active', mode==='doing');
-   $('heroTitle').textContent = mode==='planning' ? '寫下今天一定要做的3件事，再開始。' : '現在，只要先開始5分鐘就好。';
+   $('heroTitle').textContent = mode==='planning' ? '寫下今天一定要做的3件事，再開始。' : '現在，只要先開始2分鐘就好。';
    $('heroDesc').textContent = mode==='planning' ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了。接下來只要做眼前的一步，不需要一直重新檢討。';
    $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
    $('executeNotice').classList.add('hide');
@@ -1279,6 +1328,21 @@ textarea.field {
      `;
      container.appendChild(col);
    });
+ }
+
+ /* ==========================================================================
+    番茄鐘彈窗 Popup 控制邏輯
+    ========================================================================== */
+ function showPomodoroPopup(breakMinutes, title, desc) {
+   pendingBreakMinutes = breakMinutes;
+   $('modalPomodoroTitle').textContent = title;
+   $('modalPomodoroDesc').textContent = desc;
+   $('modalTakeBreakBtn').textContent = `☕ 休息 ${breakMinutes} 分鐘`;
+   $('pomodoroModal').classList.remove('hide');
+ }
+
+ function hidePomodoroPopup() {
+   $('pomodoroModal').classList.add('hide');
  }
 
  function updateFocusUI(){
@@ -1325,16 +1389,17 @@ textarea.field {
    $('averageDistractions').textContent = `${(totalDistractions/7).toFixed(1)} 次`;
    $('distractionDetail').textContent = `最近 7 天共 ${totalDistractions} 次（以連續 7 天口徑平均）`;
 
+   // 番茄鐘滿週期檢查與 Popup 彈窗觸發
    const cycles = Math.floor(currentFocusMs() / (25 * 60 * 1000));
    if(focusStartedAt && cycles > lastPomodoroCycles){
      lastPomodoroCycles = cycles;
      if(cycles % 4 === 0){
-       $('pomodoroMessage').textContent = '已經專注了 4 個番茄鐘（100分鐘）！要休息 20 分鐘嗎？';
-       $('takeLongBreak').classList.remove('hide'); $('takeShortBreak').classList.add('hide');
+       $('pomodoroMessage').textContent = '已專注 4 個番茄鐘（100分鐘），建議好好休息 20 分鐘。';
+       showPomodoroPopup(20, '🎉 4 個番茄鐘達成！', '太厲害了！你已經連續累計了 4 個番茄鐘（100分鐘），建議給自己 20 分鐘長休息，補充能量。');
        triggerNotify('番茄鐘達成！', '已經專注 4 個番茄鐘，建議好好休息 20 分鐘。');
      } else {
-       $('pomodoroMessage').textContent = '已經專注了一個番茄鐘（25分鐘）！要休息 5 分鐘嗎？';
-       $('takeShortBreak').classList.remove('hide'); $('takeLongBreak').classList.add('hide');
+       $('pomodoroMessage').textContent = `已累積 ${cycles} 個番茄鐘（${cycles * 25}分鐘），休息時間到了。`;
+       showPomodoroPopup(5, '🍅 番茄鐘達成！', '專注了 25 分鐘，眼前的小步已經推進！要休息 5 分鐘放鬆一下嗎？');
        triggerNotify('番茄鐘達成！', '已經專注 25 分鐘，放鬆休息 5 分鐘吧。');
      }
    }
@@ -1363,18 +1428,25 @@ textarea.field {
      return;
    }
    const nowTs = Date.now();
-   // 計算整體起點與終點進行跨日切割
-   const startTs = focusStartedAt ? (focusStartedAt - focusAccumulatedMs) : (nowTs - focusAccumulatedMs);
    const sessionMs = currentFocusMs();
-
+   
+   // 依據純專注時長推算真實工時區間，避免暫停期間被算入
+   const startTs = nowTs - sessionMs;
    splitAndRecordInterval(startTs, nowTs);
 
    focusStartedAt = null;
    focusAccumulatedMs = 0;
    isPaused = false;
    lastPomodoroCycles = 0;
-   persistTimerState();
 
+   // 關閉番茄鐘 Popup 與清理休息狀態
+   hidePomodoroPopup();
+   breakEndsAt = null;
+   $('breakActionGroup').classList.add('hide');
+   $('breakStatus').textContent = '';
+   $('pomodoroMessage').textContent = '開始計時後，每累積 25 分鐘會彈窗主動提醒休息。';
+
+   persistTimerState();
    updateFocusUI();
    updateTabTitle();
    toast(`本次專注結束，已精確記錄 ${fmtFull(sessionMs)}。`);
@@ -1406,6 +1478,7 @@ textarea.field {
  }
 
  function startBreak(minutes){
+   hidePomodoroPopup();
    if (focusStartedAt) {
      focusAccumulatedMs += (Date.now() - focusStartedAt);
      focusStartedAt = null;
@@ -1413,8 +1486,6 @@ textarea.field {
    }
    breakEndsAt = Date.now() + minutes * 60 * 1000;
    $('breakStatus').textContent = `休息倒數中：${minutes} 分鐘（專注計時已暫停）。`;
-   $('takeShortBreak').classList.add('hide');
-   $('takeLongBreak').classList.add('hide');
    $('breakActionGroup').classList.remove('hide');
    updateFocusUI();
    updateTabTitle();
@@ -1438,12 +1509,26 @@ textarea.field {
    } else {
      endBreakState();
      triggerNotify('休息時間結束', '休息已結束，可以繼續專注或記錄結束。');
-     $('breakActionGroup').classList.remove('hide');
+     if (isPaused || focusStartedAt) {
+       $('breakActionGroup').classList.remove('hide');
+     }
    }
  }
 
- $('takeShortBreak').addEventListener('click', () => startBreak(5));
- $('takeLongBreak').addEventListener('click', () => startBreak(20));
+ // Popup 按鈕事件綁定
+ $('modalTakeBreakBtn').addEventListener('click', () => {
+   startBreak(pendingBreakMinutes);
+ });
+
+ $('modalSkipBreakBtn').addEventListener('click', () => {
+   hidePomodoroPopup();
+   toast('繼續專注衝刺！');
+ });
+
+ $('modalStopFocusBtn').addEventListener('click', () => {
+   hidePomodoroPopup();
+   stopAndRecordFocus();
+ });
 
  $('resumeFromBreakBtn').addEventListener('click', () => {
    endBreakState();
@@ -1482,7 +1567,9 @@ textarea.field {
  function finishDistractionCountdown() {
    countdownEndsAt = null;
    $('countdownBox').classList.add('hide');
-   $('distractionChoiceBox').classList.remove('hide');
+   if (isPaused || focusStartedAt) {
+     $('distractionChoiceBox').classList.remove('hide');
+   }
    updateTabTitle();
    persistTimerState();
  }
@@ -1741,6 +1828,7 @@ textarea.field {
            toast('資料已順利合併完成！');
          } else {
            data = parsed;
+           if (!data[today]) data[today] = freshDay();
            toast('備份資料已順利還原並覆蓋！');
          }
          save();
