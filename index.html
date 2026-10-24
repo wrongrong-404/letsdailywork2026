@@ -6,7 +6,7 @@
 <title>DAY LOG / 計畫與執行</title>
 <style>
 /* ==========================================================================
-   1. 基礎設定與配色變數 (全面統一暖玫瑰、奶油色、深棕色)
+   1. 基礎設定與配色變數
    ========================================================================== */
 :root {
   --rose: #f28e7b;
@@ -20,7 +20,7 @@
   --muted: #a7837d;
   --line: #d9b0a8;
   --brown-active: #7d4e48;
-  --shadow: 4px 4px 0 #b98479;
+  --shadow: 3px 3px 0 rgba(125,78,72,.22);
 }
 
 * {
@@ -31,846 +31,206 @@ body {
   margin: 0;
   background: #d8a394;
   color: var(--ink);
-  font-family: ui-monospace, "Noto Sans TC", monospace;
-  image-rendering: pixelated;
+  font-family: ui-monospace, "Noto Sans TC", "Microsoft JhengHei", monospace;
+  line-height: 1.55;
   min-height: 100vh;
 }
 
-button, input, textarea, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-}
-
-.hide {
-  display: none !important;
-}
+button, input, textarea, select { font: inherit; font-size: 14px; }
+button { cursor: pointer; border: 0; min-height: 38px; }
+.hide { display: none !important; }
 
 /* ==========================================================================
-   2. 主容器與卡片基底 (Layout & Panels)
+   2. 主容器與卡片基底
    ========================================================================== */
-.shell {
-  max-width: 1000px;
-  margin: auto;
-  padding: 26px 20px 44px;
-}
-
+.shell { max-width: 760px; margin: auto; padding: 26px 20px 44px; }
 .panel {
-  background: #f8f3f2;
-  border: 3px solid #8c6059;
-  border-radius: 7px;
-  box-shadow: var(--shadow);
-  padding: 18px;
-  min-width: 0;
+  background: #f8f3f2; border: 2px solid #8c6059; border-radius: 12px;
+  box-shadow: var(--shadow); padding: 18px; min-width: 0; margin-top: 15px;
 }
-
-.panel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 17px;
-}
-
-.panel h3 {
-  margin: 0;
-  font-size: 15px;
-  letter-spacing: .02em;
-}
-
-.sub {
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 5px;
-}
-
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 17px; }
+.panel h3 { margin: 0; font-size: 15px; letter-spacing: .02em; }
+.sub { color: var(--muted); font-size: 12px; line-height: 1.65; margin-top: 5px; }
 .count {
-  background: #f4c0b3;
-  color: #8d514a;
-  border: 1px solid #e5a89b;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 5px 8px;
-  border-radius: 3px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1.08fr .92fr;
-  gap: 15px;
-  margin-top: 15px;
+  background: #f4c0b3; color: #8d514a; border: 1px solid #e5a89b;
+  font-size: 10px; font-weight: 800; padding: 5px 8px; border-radius: 3px;
 }
 
 /* ==========================================================================
-   3. 頁首與導航 (Header & Hero)
+   3. 頁首與導航
    ========================================================================== */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 15px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
+header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 15px; }
+.brand { display: flex; align-items: center; gap: 10px; }
 .logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 5px;
-  background: var(--rose);
-  color: #fff;
-  border: 2px solid #a76b61;
-  box-shadow: 3px 3px 0 #b98479;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
+  width: 48px; height: 48px; border-radius: 5px; background: var(--rose);
+  color: #fff; border: 2px solid #a76b61; box-shadow: 3px 3px 0 #b98479;
+  display: grid; place-items: center; font-size: 23px;
 }
-
-.brand h1 {
-  font-size: 19px;
-  letter-spacing: .12em;
-  margin: 0;
-}
-
-.brand p {
-  margin: 3px 0 0;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: .08em;
-}
-
+.brand h1 { font-size: 19px; letter-spacing: .12em; margin: 0; display: flex; align-items: center; gap: 8px; }
+.brand p { margin: 3px 0 0; color: var(--muted); font-size: 10px; letter-spacing: .08em; }
 .date-chip {
-  background: #f8f1f0;
-  border: 2px solid #8b5f59;
-  border-radius: 3px;
-  padding: 10px 14px;
-  color: #86564f;
-  font-size: 11px;
-  font-weight: bold;
-  box-shadow: 3px 3px 0 #b98479;
+  background: #f8f1f0; border: 2px solid #8b5f59; border-radius: 3px;
+  padding: 10px 14px; color: #86564f; font-size: 11px; font-weight: bold; box-shadow: 3px 3px 0 #b98479;
 }
-
-.hero {
-  background: #f8f3f2;
-  border: 3px solid #8c6059;
-  border-radius: 7px;
-  padding: 20px 22px;
-  box-shadow: 5px 5px 0 #b98479;
-}
-
-.hero-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.eyebrow {
-  font-size: 10px;
-  color: #b76e61;
-  font-weight: 800;
-  letter-spacing: .16em;
-}
-
-.hero h2 {
-  font-size: 23px;
-  letter-spacing: .02em;
-  margin: 8px 0;
-  line-height: 1.25;
-}
-
-.hero p {
-  color: #997a74;
-  margin: 0;
-  line-height: 1.7;
-  max-width: 600px;
-  font-size: 12px;
-}
-
+.hero { background: #f8f3f2; border: 2px solid #8c6059; border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.eyebrow { font-size: 10px; color: #b76e61; font-weight: 800; letter-spacing: .16em; }
+.hero h2 { font-size: 23px; letter-spacing: .02em; margin: 8px 0; line-height: 1.35; }
+.hero p { color: #997a74; margin: 0; line-height: 1.7; font-size: 12px; }
+.mode-switch-container { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
 .mode-switch {
-  display: flex;
-  gap: 4px;
-  background: #efd8d3;
-  padding: 4px;
-  border-radius: 4px;
-  border: 1px solid var(--line);
-  flex-shrink: 0;
+  display: flex; gap: 4px; background: #efd8d3; padding: 4px;
+  border-radius: 4px; border: 1px solid var(--line);
 }
-
-.mode-switch button {
-  padding: 10px 13px;
-  border-radius: 3px;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 700;
-  font-size: 12px;
-}
-
-.mode-switch button.active {
-  background: var(--rose);
-  color: #fff;
-  box-shadow: inset 0 -3px 0 #d56e60;
-}
-
+.mode-switch button { padding: 10px 13px; border-radius: 3px; background: transparent; color: var(--muted); font-weight: 700; font-size: 12px; }
+.mode-switch button.active { background: var(--rose); color: #fff; box-shadow: inset 0 -3px 0 #d56e60; }
 .rule {
-  margin-top: 20px;
-  background: #f3e5e2;
-  border: 1px solid #e5c5bd;
-  padding: 11px 13px;
-  border-radius: 4px;
-  color: #86665f;
-  font-size: 12px;
-  line-height: 1.65;
+  margin-top: 20px; background: #f3e5e2; border: 1px solid #e5c5bd;
+  padding: 11px 13px; border-radius: 4px; color: #86665f; font-size: 12px; line-height: 1.65;
 }
-
-.rule strong {
-  color: #a85f55;
-}
+.rule strong { color: #a85f55; }
 
 /* ==========================================================================
    4. 通用按鈕與輸入欄位
    ========================================================================== */
 .field {
-  width: 100%;
-  border: 1px solid var(--line);
-  background: var(--cream);
-  border-radius: 3px;
-  padding: 11px;
-  color: var(--ink);
-  outline: none;
-  font-size: 12px;
-  min-width: 0;
+  width: 100%; border: 1px solid var(--line); background: var(--cream);
+  border-radius: 3px; padding: 11px; color: var(--ink); outline: none; min-width: 0;
 }
-
-.field:focus {
-  border-color: #e98c79;
-  box-shadow: 0 0 0 2px var(--rose-soft);
-}
-
-.field::placeholder {
-  color: #bba19b;
-}
-
-textarea.field {
-  resize: vertical;
-  min-height: 72px;
-}
-
+.field:focus { border-color: #e98c79; box-shadow: 0 0 0 2px var(--rose-soft); }
+.field::placeholder { color: #bba19b; }
+textarea.field { resize: vertical; min-height: 72px; }
 .primary {
-  background: var(--rose);
-  color: #fff;
-  border: 1px solid #c87466;
-  border-radius: 3px;
-  padding: 11px 16px;
-  font-size: 11px;
-  font-weight: 800;
-  white-space: nowrap;
-  box-shadow: inset 0 -3px 0 #d56e60;
+  background: var(--rose); color: #fff; border: 1px solid #c87466; border-radius: 3px;
+  padding: 11px 16px; font-size: 11px; font-weight: 800; white-space: nowrap; box-shadow: inset 0 -3px 0 #d56e60;
 }
-
-.primary:hover {
-  background: #eb806e;
-}
-
-.soft-btn {
-  background: var(--rose-soft);
-  color: #8d514a;
-  border: 1px solid #e5a89b;
-  font-weight: 700;
-  border-radius: 3px;
-  padding: 9px 12px;
-}
-
-.mini-btn {
-  background: transparent;
-  color: #a66c62;
-  padding: 2px 5px;
-  border-radius: 3px;
-  font-size: 11px;
-}
-
-.mini-btn:hover {
-  background: #f8ded7;
-}
-
-.empty {
-  padding: 22px 12px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  border: 1px dashed var(--line);
-  border-radius: 4px;
-}
-
-.quick-start-box {
-  background: #fff0ea;
-  border: 2px dashed #e8beb2;
-  border-radius: 6px;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.quick-start-box p {
-  margin: 0;
-  font-size: 11px;
-  color: var(--ink-light);
-}
-
-.btn-two-min {
-  background: var(--brown-active);
-  color: #fff;
-  border: 1px solid #5a342f;
-  padding: 8px 14px;
-  font-size: 11px;
-  font-weight: 800;
-  border-radius: 4px;
-  box-shadow: 2px 2px 0 #5a342f;
-}
-
-.btn-two-min:hover {
-  background: #6a403a;
-}
+.primary:hover { background: #eb806e; }
+.soft-btn { background: var(--rose-soft); color: #8d514a; border: 1px solid #e5a89b; font-weight: 700; border-radius: 3px; padding: 9px 12px; }
+.mini-btn { background: transparent; color: #a66c62; min-width: 34px; min-height: 34px; border-radius: 3px; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+.mini-btn:hover { background: #f8ded7; }
+.empty { padding: 22px 12px; text-align: center; color: var(--muted); font-size: 12px; border: 1px dashed var(--line); border-radius: 4px; line-height: 1.65; }
 
 /* ==========================================================================
-   5. 今日執行清單模組
+   5. 今日執行清單與邊欄模式
    ========================================================================== */
-.plan-list {
-  display: grid;
-  gap: 8px;
-}
-
-.plan {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  background: var(--cream);
-  border: 1px solid #e7cbc5;
-  border-radius: 4px;
-  padding: 11px;
-}
-
+.plan-list { display: grid; gap: 8px; }
+.plan { display: flex; gap: 10px; align-items: center; background: var(--cream); border: 1px solid #e7cbc5; border-radius: 4px; padding: 11px; }
 .plan input[type=checkbox] {
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border: 2px solid #e5a89b;
-  border-radius: 2px;
-  margin: 0;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
+  appearance: none; width: 22px; height: 22px; border: 2px solid #e5a89b;
+  border-radius: 2px; margin: 0; flex-shrink: 0; display: grid; place-items: center;
 }
+.plan input:checked { background: var(--brown-active); border-color: var(--brown-active); }
+.plan input:checked:after { content: "✓"; color: #fff8f1; font-size: 14px; font-weight: 900; }
+.plan-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.plan-title { font-size: 14px; font-weight: 700; line-height: 1.5; overflow-wrap: anywhere; }
+.plan.done .plan-title { text-decoration: line-through; color: #a9959d; }
+.plan-note { font-size: 12px; color: var(--muted); margin-top: 4px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
+.plan-controls { display: flex; gap: 4px; align-items: center; }
+.add-plan { display: flex; gap: 8px; margin-top: 14px; }
+.edit-inline-wrap { display: flex; gap: 6px; width: 100%; align-items: center; }
+.edit-inline-input { flex: 1; padding: 4px 6px; font-family: inherit; border: 1px solid var(--rose); border-radius: 3px; background: #fff; }
 
-.plan input:checked {
-  background: var(--brown-active);
-  border-color: var(--brown-active);
+/* 邊欄 (Sidebar) 樣式 */
+.sidebar-overlay {
+  position: fixed; inset: 0; background: rgba(78, 57, 55, 0.4); z-index: 100;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease; backdrop-filter: blur(1px);
 }
-
-.plan input:checked:after {
-  content: "✓";
-  color: #fff8f1;
-  font-size: 14px;
-  font-weight: 900;
+.sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+#planPanel.is-sidebar {
+  position: fixed; top: 0; right: -360px; bottom: 0; width: 360px; max-width: 85vw;
+  margin: 0; border: none; border-radius: 0; z-index: 105; box-shadow: -4px 0 15px rgba(0,0,0,0.15);
+  transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-y: auto; height: 100vh;
 }
-
-.plan-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.plan-title {
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
-}
-
-.plan.done .plan-title {
-  text-decoration: line-through;
-  color: #a9959d;
-}
-
-.plan-note {
-  font-size: 10px;
-  color: var(--muted);
-  margin-top: 4px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.plan-controls {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.add-plan {
-  display: flex;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.edit-inline-wrap {
-  display: flex;
-  gap: 6px;
-  width: 100%;
-  align-items: center;
-}
-
-.edit-inline-input {
-  flex: 1;
-  padding: 4px 6px;
-  font-size: 12px;
-  font-family: inherit;
-  border: 1px solid var(--rose);
-  border-radius: 3px;
-  background: #fff;
+#planPanel.is-sidebar.open { right: 0; }
+.sidebar-toggle-btn {
+  position: fixed; right: 20px; bottom: 20px; z-index: 90;
+  border-radius: 50px; padding: 14px 22px; box-shadow: 4px 4px 0 #b98479;
+  font-size: 13px;
 }
 
 /* ==========================================================================
-   6. 想法時間軸與橫幅
+   6. 想法時間軸
    ========================================================================== */
-.thought-form {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 17px;
-  padding: 12px;
-  background: var(--cream-dark);
-  border: 1px solid #e3c1b8;
-  border-radius: 4px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 8px;
-}
-
-.small-label {
-  font-size: 10px;
-  color: #997a74;
-  font-weight: 700;
-  align-self: center;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.form-actions span {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.timeline {
-  position: relative;
-  padding-left: 24px;
-  display: grid;
-  gap: 10px;
-}
-
-.timeline:before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: #e4b8ad;
-}
-
-.event {
-  position: relative;
-  background: var(--cream);
-  border: 1px solid #e7cbc5;
-  border-radius: 4px;
-  padding: 11px;
-}
-
+.thought-form { display: grid; gap: 10px; margin-bottom: 17px; padding: 12px; background: var(--cream-dark); border: 1px solid #e3c1b8; border-radius: 4px; }
+.form-row { display: grid; grid-template-columns: 120px 1fr; gap: 8px; }
+.small-label { font-size: 12px; color: #997a74; font-weight: 700; align-self: center; line-height: 1.65; }
+.form-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; line-height: 1.65; }
+.timeline { position: relative; padding-left: 24px; display: grid; gap: 10px; }
+.timeline:before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: #e4b8ad; }
+.event { position: relative; background: var(--cream); border: 1px solid #e7cbc5; border-radius: 4px; padding: 11px; }
 .event:before {
-  content: "";
-  position: absolute;
-  left: -23px;
-  top: 17px;
-  width: 11px;
-  height: 11px;
-  border-radius: 1px;
-  background: var(--rose);
-  border: 3px solid white;
-  box-shadow: 0 0 0 2px #f8f3f2, 0 0 0 3px #dca59a;
+  content: ""; position: absolute; left: -23px; top: 17px; width: 11px; height: 11px;
+  border-radius: 1px; background: var(--rose); border: 3px solid white; box-shadow: 0 0 0 2px #f8f3f2, 0 0 0 3px #dca59a;
 }
-
-.event-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 7px;
-}
-
-.event-time {
-  font-size: 10px;
-  font-weight: 800;
-  color: #965b53;
-  background: #f7d2c9;
-  padding: 4px 6px;
-  border-radius: 3px;
-}
-
-.event-text {
-  font-size: 12px;
-  line-height: 1.65;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.event-tag {
-  font-size: 10px;
-  color: #a17e8d;
-  margin-top: 8px;
-}
-
-.plan-thought {
-  background: #FFF0E8 !important;
-  border-color: #E8BEB2 !important;
-}
-.plan-thought::before {
-  background: #D98D7B !important;
-}
-.doing-thought {
-  background: #F5D5CD !important;
-  border-color: #E7B7AA !important;
-}
-.doing-thought::before {
-  background: #F7E9D9 !important;
-}
-
-.execute-banner {
-  background: #fff2ed;
-  border: 1px solid #e8beb2;
-  color: #7d4e48;
-  border-radius: 4px;
-  font-size: 11px;
-  line-height: 1.65;
-  margin-bottom: 15px;
-  padding: 13px 15px;
-}
-
-.execute-banner strong {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 3px;
-  color: #9d5e56;
-}
+.event-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 7px; }
+.event-time { font-size: 10px; font-weight: 800; color: #965b53; background: #f7d2c9; padding: 4px 6px; border-radius: 3px; }
+.event-text { font-size: 12px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.event-tag { font-size: 10px; color: #a17e8d; margin-top: 8px; }
+.plan-thought { background: #FFF0E8 !important; border-color: #E8BEB2 !important; }
+.plan-thought::before { background: #D98D7B !important; }
+.doing-thought { background: #F5D5CD !important; border-color: #E7B7AA !important; }
+.doing-thought::before { background: #F7E9D9 !important; }
 
 /* ==========================================================================
    7. 執行計時器與統計模組
    ========================================================================== */
-.focus-panel {
-  margin-bottom: 10px;
-}
-
-.focus-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.focus-clock, .average-box {
-  background: var(--cream-dark);
-  border: 1px solid #e3c1b8;
-  padding: 16px;
-  border-radius: 4px;
-}
-
-.clock-label {
-  font-size: 10px;
-  color: #997a74;
-  letter-spacing: .06em;
-}
-
-.clock-value {
-  font-size: clamp(26px, 4vw, 38px);
-  font-weight: 800;
-  letter-spacing: .04em;
-  color: #86564f;
-  margin: 7px 0 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.average-value {
-  font-size: 23px;
-  font-weight: 800;
-  color: #86564f;
-  margin: 8px 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.focus-actions, .rescue-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.focus-panel .primary, .focus-panel .soft-btn {
-  padding: 10px 12px;
-}
-
-.countdown {
-  background: var(--cream);
-  border: 1px solid #e7cbc5;
-  padding: 14px;
-  border-radius: 4px;
-  width: max-content;
-  max-width: 100%;
-}
-
-.procrastination {
-  margin-top: 16px;
-  padding-top: 15px;
-  border-top: 1px dashed var(--line);
-  display: grid;
-  gap: 12px;
-}
-
-.achievement-box {
-  margin-top: 14px;
-  background: #fbf5f2;
-  border: 1px solid #e8beb2;
-  border-radius: 4px;
-  padding: 12px 14px;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--ink-light);
-}
-
-.achievement-box strong {
-  color: var(--rose-dark);
-}
+.focus-clock, .average-box { background: var(--cream-dark); border: 1px solid #e3c1b8; padding: 18px; border-radius: 12px; }
+.clock-label { font-size: 10px; color: #997a74; letter-spacing: .06em; }
+.clock-value { font-size: clamp(38px, 6vw, 48px); font-weight: 800; letter-spacing: .04em; color: #86564f; margin: 10px 0 16px; font-variant-numeric: tabular-nums; }
+.focus-actions, .rescue-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.focus-actions button { min-height: 44px; font-size: 13px; }
+.average-value { font-size: 23px; font-weight: 800; color: #86564f; margin: 8px 0; font-variant-numeric: tabular-nums; }
+.countdown { background: var(--cream); border: 1px solid #e7cbc5; padding: 14px; border-radius: 4px; width: max-content; max-width: 100%; margin-top: 12px; }
+.procrastination { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line); }
 
 /* ==========================================================================
    8. 近 7 天長條圖模組
    ========================================================================== */
-.chart-panel {
-  margin-top: 14px;
-  background: var(--cream-dark);
-  border: 1px solid #e3c1b8;
-  border-radius: 4px;
-  padding: 16px;
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.chart-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
-  height: 140px;
-  padding-top: 24px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #d9b0a8;
-}
-
-.chart-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  justify-content: flex-end;
-}
-
-.bar-val {
-  font-size: 9px;
-  color: #86564f;
-  margin-bottom: 4px;
-  font-weight: 800;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.bar-pill {
-  width: 100%;
-  max-width: 28px;
-  min-height: 4px;
-  background: #e8a599;
-  border: 1px solid #c9796c;
-  border-radius: 2px 2px 0 0;
-  transition: height 0.3s ease;
-}
-
-.bar-pill.is-today {
-  background: var(--rose);
-  border-color: #ab5749;
-  box-shadow: 0 0 0 1px #fff;
-}
-
-.bar-label {
-  font-size: 9px;
-  color: #997a74;
-  margin-top: 6px;
-  text-align: center;
-}
-
-.bar-label.is-today {
-  color: #86564f;
-  font-weight: 800;
-}
+.chart-panel { margin-top: 14px; background: var(--cream-dark); border: 1px solid #e3c1b8; border-radius: 4px; padding: 16px; }
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.chart-container { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; height: 140px; padding-top: 24px; padding-bottom: 6px; border-bottom: 2px solid #d9b0a8; }
+.chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+.bar-val { font-size: 9px; color: #86564f; margin-bottom: 4px; font-weight: 800; text-align: center; white-space: nowrap; }
+.bar-pill { width: 100%; max-width: 28px; min-height: 4px; background: #e8a599; border: 1px solid #c9796c; border-radius: 2px 2px 0 0; transition: height 0.3s ease; }
+.bar-pill.is-today { background: var(--rose); border-color: #ab5749; box-shadow: 0 0 0 1px #fff; }
+.bar-label { font-size: 9px; color: #997a74; margin-top: 6px; text-align: center; }
+.bar-label.is-today { color: #86564f; font-weight: 800; }
 
 /* ==========================================================================
-   9. 彈窗 Modal、頁尾、備份資訊與 Toast
+   9. 彈窗 Modal、頁尾與 Toast
    ========================================================================== */
 .modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(78, 57, 55, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  z-index: 100;
-  backdrop-filter: blur(2px);
+  position: fixed; inset: 0; background: rgba(78, 57, 55, 0.6); display: flex;
+  align-items: center; justify-content: center; padding: 18px; z-index: 200; backdrop-filter: blur(2px);
 }
-
 .modal-card {
-  background: #f8f3f2;
-  border: 3px solid #8c6059;
-  border-radius: 8px;
-  box-shadow: 6px 6px 0 #8c6059;
-  padding: 24px 22px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  animation: modalPopIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  background: #f8f3f2; border: 3px solid #8c6059; border-radius: 12px; box-shadow: 6px 6px 0 #8c6059;
+  padding: 24px 22px; max-width: 540px; width: 100%; animation: modalPopIn 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  max-height: 88vh; overflow-y: auto; text-align: left;
 }
+@keyframes modalPopIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-@keyframes modalPopIn {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.footer {
-  font-family: ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: .08em;
-  color: #865f58;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  margin-top: 22px;
-}
-
-.footer span {
-  color: #f7eee9;
-}
-
-.backup-time-tag {
-  font-size: 10px;
-  color: #7d4e48;
-}
-
-.copyright {
-  font-size: 9px;
-  letter-spacing: .05em;
-  color: #997a74;
-  margin-top: 4px;
-}
-
+.footer { font-family: ui-monospace, monospace; font-size: 10px; letter-spacing: .08em; color: #865f58; display: flex; flex-direction: column; gap: 8px; align-items: center; margin-top: 22px; }
+.footer span { color: #f7eee9; }
+.backup-time-tag { font-size: 10px; color: #7d4e48; }
+.copyright { font-size: 9px; letter-spacing: .05em; color: #997a74; margin-top: 4px; }
 .toast {
-  position: fixed;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #f8f1f0;
-  color: #6f4944;
-  border: 2px solid #8c6059;
-  border-radius: 3px;
-  padding: 11px 16px;
-  font-size: 11px;
-  box-shadow: 3px 3px 0 #b98479;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s;
-  z-index: 110;
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: #f8f1f0; color: #6f4944;
+  border: 2px solid #8c6059; border-radius: 10px; padding: 11px 16px; font-size: 13px; box-shadow: 3px 3px 0 #b98479;
+  opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 300; max-width: calc(100vw - 28px); text-align: center;
 }
-
-.toast.show {
-  opacity: 1;
-}
+.toast.show { opacity: 1; }
+:focus-visible { outline: 3px solid #c56c5c; outline-offset: 3px; }
 
 /* ==========================================================================
    10. 響應式佈局
    ========================================================================== */
 @media (max-width: 760px) {
-  .shell { padding: 14px 10px 30px; }
-  .hero { padding: 16px; }
-  .hero-top { display: block; }
-  .hero h2 { font-size: 20px; }
-  .mode-switch { margin-top: 14px; }
-  .panel { padding: 14px; }
-  .grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; gap: 6px; }
-  .quick-start-box { flex-direction: column; align-items: flex-start; }
-}
-
-@media (max-width: 650px) {
-  .focus-layout { grid-template-columns: 1fr; }
-  .focus-actions button { flex: 1; }
-  .chart-container { gap: 4px; }
-}
-
-/* 2026 refresh: clearer reading, calmer hierarchy, stronger mobile controls */
-:root { --shadow: 3px 3px 0 rgba(125,78,72,.22); }
-body { font-family: ui-monospace, "Noto Sans TC", "Microsoft JhengHei", monospace; line-height: 1.55; }
-.shell { max-width: 1080px; }
-.panel { border-width: 2px; border-radius: 12px; box-shadow: var(--shadow); }
-.hero { border-radius: 14px; }
-.sub, .plan-note, .small-label, .form-actions, .empty { font-size: 12px; line-height: 1.65; }
-.plan-title { font-size: 14px; line-height: 1.5; }
-.plan-note { font-size: 12px; }
-.field, input, textarea, select { font-size: 14px; }
-button { min-height: 38px; }
-.mini-btn { min-width: 34px; min-height: 34px; }
-.panel-head { align-items: flex-start; }
-.focus-clock, .quick-start-box { border-radius: 12px; }
-.toast { font-size: 13px; border-radius: 10px; max-width: calc(100vw - 28px); text-align: center; }
-:focus-visible { outline: 3px solid #c56c5c; outline-offset: 3px; }
-@media (max-width: 760px) {
   .shell { padding: 12px 12px 28px; }
   .panel { padding: 16px; }
   .hero { padding: 18px 16px; }
-  .hero h2 { line-height: 1.35; }
+  .hero-top { display: block; }
+  .mode-switch-container { margin-top: 14px; align-items: stretch; }
   .mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .mode-switch button { min-height: 44px; }
   .add-plan { flex-direction: column; }
@@ -878,145 +238,310 @@ button { min-height: 38px; }
   .plan { gap: 10px; }
   .plan-controls { flex-wrap: wrap; }
   .focus-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .focus-actions button { min-height: 44px; }
-  .clock-value { font-size: clamp(30px, 9vw, 46px); }
+  .clock-value { font-size: clamp(36px, 12vw, 48px); }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* ==========================================================================
+   DAY LOG · visual refresh — warm pixel journal
+   ========================================================================== */
+:root {
+  --rose: #e98978;
+  --rose-dark: #a65f55;
+  --rose-soft: #f4c7bd;
+  --rose-pale: #fff0eb;
+  --cream: #fffaf4;
+  --cream-dark: #f5e7dc;
+  --ink: #493633;
+  --ink-light: #75544c;
+  --muted: #a17f76;
+  --line: #dfb9ad;
+  --brown-active: #76504a;
+  --shadow: 4px 4px 0 rgba(105, 65, 58, .16);
+}
+html { color-scheme: light; scroll-behavior: smooth; }
+body {
+  background-color: #d9a596;
+  background-image: radial-gradient(rgba(255,250,244,.24) 1px, transparent 1px),
+                    linear-gradient(135deg, rgba(255,239,231,.12), transparent 55%);
+  background-size: 12px 12px, auto;
+  color: var(--ink);
+  letter-spacing: .005em;
+}
+button, input, textarea, select { font-family: inherit; }
+button { transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease; }
+button:active { transform: translate(1px, 1px); }
+.shell { max-width: 820px; padding: 30px 22px 48px; }
+header { margin-bottom: 18px; }
+.logo { border-radius: 7px; box-shadow: 3px 3px 0 #b98479; font-size: 25px; }
+.brand h1 { letter-spacing: .14em; }
+.brand p { letter-spacing: .12em; }
+.date-chip { border-radius: 6px; background: var(--cream); box-shadow: 3px 3px 0 #b98479; }
+.hero, .panel, .modal-card {
+  background: var(--cream);
+  border: 2px solid #94675e;
+  box-shadow: var(--shadow);
+}
+.hero { border-radius: 14px; padding: 24px; }
+.hero h2 { letter-spacing: -.025em; }
+.hero .rule { border-radius: 8px; background: #f7e9df; border-color: #e9c9bd; }
+.panel { border-radius: 12px; padding: 20px; margin-top: 18px; }
+.panel-head { align-items: center; margin-bottom: 18px; }
+.panel h3 { font-size: 15px; letter-spacing: .025em; }
+.count { border-radius: 999px; padding: 5px 10px; background: #f8ded5; }
+.mode-switch { border-radius: 8px; padding: 4px; background: #f4e3dc; }
+.mode-switch button { border-radius: 6px; }
+.mode-switch button.active { box-shadow: 0 2px 0 #c86e60; }
+.field { border-radius: 7px; background: #fffdf9; padding: 12px 13px; }
+.primary, .soft-btn { border-radius: 7px; }
+.primary { box-shadow: inset 0 -3px 0 #c96f60, 0 2px 0 rgba(125,78,72,.08); }
+.soft-btn { background: #f5e2d9; border-color: #e5c1b6; }
+.mini-btn { border-radius: 6px; }
+.empty { background: rgba(255,250,244,.68); border-radius: 8px; padding: 25px 14px; }
+.plan { border-radius: 8px; padding: 12px; gap: 12px; background: #fffdf9; border-color: #ead3ca; }
+.plan input[type=checkbox] { border-radius: 6px; }
+.plan-controls { gap: 2px; }
+.plan-controls .mini-btn { min-width: 30px; }
+#planPanel.is-sidebar {
+  background: var(--cream);
+  border-left: 3px solid #94675e;
+  box-shadow: -8px 0 0 rgba(105,65,58,.08), -14px 0 28px rgba(64,40,36,.16);
+  padding: 26px 20px;
+}
+.sidebar-overlay { background: rgba(61,43,40,.38); backdrop-filter: blur(3px); }
+.sidebar-toggle-btn { border-radius: 999px; padding: 13px 18px; box-shadow: 4px 4px 0 #b98479; }
+.focus-clock { background: linear-gradient(145deg, #f8e9df, #f3dfd4); border: 1px solid #e5c4b7; border-radius: 12px; padding: 22px; }
+.clock-label { font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+.clock-value { font-variant-numeric: tabular-nums; letter-spacing: .035em; }
+.focus-actions button { min-height: 46px; }
+.procrastination { margin-top: 22px; padding: 18px 0 0; border-top: 1px dashed #d8afa3; }
+.countdown { border-radius: 9px; background: #fffaf4; border-color: #e8c9be; }
+.thought-form { border-radius: 10px; background: #f8ece3; border-color: #e9cbbf; padding: 14px; }
+.timeline { gap: 12px; }
+.event { border-radius: 9px; padding: 13px; box-shadow: 2px 2px 0 rgba(125,78,72,.07); }
+.event-time { border-radius: 5px; padding: 4px 8px; }
+.plan-thought { background: #fff4eb !important; border-color: #eac7b8 !important; }
+.doing-thought { background: #f8e4dc !important; border-color: #e5b7a9 !important; }
+.average-box, .chart-panel { background: #f8ece3; border: 1px solid #e6c7ba; border-radius: 10px; padding: 18px; }
+.average-value { font-variant-numeric: tabular-nums; }
+.chart-container { border-bottom-color: #d9b5a9; }
+.bar-pill { border-radius: 5px 5px 0 0; }
+.modal-backdrop { background: rgba(58,39,37,.58); backdrop-filter: blur(4px); padding: 20px; }
+.modal-card { border-radius: 16px; box-shadow: 7px 7px 0 rgba(89,56,51,.72); padding: 24px; max-width: 600px; }
+#thoughtModal .modal-card, #statsModal .modal-card { max-height: min(88vh, 820px); }
+#thoughtModalTitle, #statsModal h3 { letter-spacing: .015em; }
+.footer { color: #754f48; gap: 10px; margin-top: 28px; }
+.footer span { color: #fff8ef; }
+.footer .soft-btn { background: #f8eee7; }
+.toast { border-radius: 9px; box-shadow: 3px 3px 0 #b98479; }
+:focus-visible { outline: 3px solid #bd6658; outline-offset: 3px; }
+@media (max-width: 760px) {
+  .shell { padding: 14px 12px 30px; }
+  header { align-items: flex-start; }
+  .logo { width: 42px; height: 42px; }
+  .brand { gap: 9px; }
+  .brand h1 { font-size: 17px; }
+  .date-chip { padding: 8px 9px; font-size: 10px; }
+  .hero { padding: 18px 16px; }
+  .hero h2 { font-size: 21px; }
+  .panel { padding: 15px; margin-top: 14px; }
+  .panel-head { gap: 8px; }
+  .focus-clock { padding: 16px 13px; }
+  .clock-value { letter-spacing: 0; }
+  .modal-backdrop { padding: 10px; align-items: center; }
+  .modal-card { padding: 18px 14px; border-width: 2px; border-radius: 13px; max-height: 92vh; }
+  .form-row { grid-template-columns: 1fr; gap: 4px; }
+  .small-label { align-self: auto; }
+  .event-top { align-items: flex-start; }
+  .sidebar-toggle-btn { right: 13px; bottom: 13px; padding: 12px 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  button { transition: none; }
+}
+
+/* Hidden lucky draw popup */
+.logo { cursor: pointer; user-select: none; }
+.logo:focus-visible { outline: 3px solid #fff8ef; outline-offset: 4px; }
+.lucky-card { max-width: 440px; text-align: center; overflow: hidden; position: relative; }
+.lucky-topline { color: #b76e61; font-size: 10px; font-weight: 900; letter-spacing: .16em; margin-bottom: 10px; }
+.lucky-heading-row { display: flex; align-items: center; justify-content: center; position: relative; }
+.lucky-heading-row h3 { margin: 0; font-size: 24px; color: var(--ink); letter-spacing: .06em; }
+.lucky-heading-row #closeLuckyBtn { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.lucky-subtitle { margin: 9px 0 20px; color: var(--muted); font-size: 12px; }
+.lucky-results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
+.lucky-result { background: #fff3e9; border: 1px solid #e8c8bb; border-radius: 10px; padding: 14px; min-width: 0; }
+.lucky-label { display: block; color: #a17b70; font-size: 9px; font-weight: 900; letter-spacing: .12em; margin-bottom: 10px; }
+.lucky-color-line { display: flex; align-items: center; gap: 9px; font-size: 14px; }
+.lucky-swatch { width: 31px; height: 31px; flex: 0 0 31px; border-radius: 7px; border: 2px solid rgba(73,54,51,.22); box-shadow: 2px 2px 0 rgba(105,65,58,.12); }
+.lucky-number-result { text-align: center; }
+.lucky-number { display: block; color: #a65f55; font-size: 36px; line-height: 1.1; }
+.lucky-message-box { position: relative; margin: 14px 0 10px; padding: 18px 16px 16px; border-radius: 10px; background: #f7e8df; border: 1px dashed #d7a99c; }
+.lucky-star { color: #c47768; font-size: 18px; }
+.lucky-message-box p { margin: 7px 0 0; color: #694b45; font-size: 14px; line-height: 1.9; font-weight: 700; }
+.lucky-footnote { margin: 0 0 15px; color: #a17f76; font-size: 10px; line-height: 1.7; }
+.lucky-close-action { width: 100%; }
+.lucky-draw-action { width: 100%; margin: 2px 0 14px; }
+.lucky-results, .lucky-message-box, .lucky-footnote, .lucky-close-action { display: none; }
+.lucky-card.is-revealed .lucky-results,
+.lucky-card.is-revealed .lucky-message-box,
+.lucky-card.is-revealed .lucky-footnote,
+.lucky-card.is-revealed .lucky-close-action { display: block; animation: luckyReveal .42s ease-out both; }
+.lucky-card.is-revealed .lucky-results { display: grid; }
+.lucky-card.is-drawing .lucky-number { animation: luckyRoll .14s linear infinite; }
+.lucky-card.is-drawing .lucky-swatch { animation: luckyPulse .3s ease-in-out infinite alternate; }
+@keyframes luckyRoll { from { transform: translateY(-2px); opacity: .45; } to { transform: translateY(2px); opacity: 1; } }
+@keyframes luckyPulse { from { transform: scale(.86) rotate(-5deg); } to { transform: scale(1.12) rotate(5deg); } }
+@keyframes luckyReveal { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .lucky-card.is-revealed .lucky-results, .lucky-card.is-revealed .lucky-message-box,
+  .lucky-card.is-revealed .lucky-footnote, .lucky-card.is-revealed .lucky-close-action,
+  .lucky-card.is-drawing .lucky-number, .lucky-card.is-drawing .lucky-swatch { animation: none; }
+}
+@media (max-width: 420px) { .lucky-results { gap: 7px; } .lucky-result { padding: 11px 9px; } .lucky-color-line { gap: 6px; font-size: 12px; } .lucky-heading-row h3 { font-size: 21px; } }
 </style>
 </head>
 <body>
 <div class="shell">
 <header>
- <div class="brand"><div class="logo">▣</div><div><h1>DAY LOG</h1><p>PLAN MODE / ACTION MODE</p></div></div>
+ <div class="brand">
+   <div class="logo" id="luckyDrawBtn" role="button" tabindex="0" aria-label="開啟今日幸運抽籤" title="▣">▣</div>
+   <div>
+     <h1 style="display:flex;align-items:center;gap:8px;">DAY LOG <button class="mini-btn" id="openThoughtBtn" title="想法記錄與筆記" style="font-size:18px;padding:0;">▤</button></h1>
+     <p>PLAN MODE / ACTION MODE</p>
+   </div>
+ </div>
  <div class="date-chip" id="todayLabel">今天 · --</div>
 </header>
+
 <section class="hero">
- <div class="hero-top"><div><div class="eyebrow">MY GENTLE PRODUCTIVITY</div><h2 id="heroTitle">先整理，再開始。</h2><p id="heroDesc">計畫時允許自己想很多；執行時，把注意力交給眼前的一步。</p></div>
- <div class="mode-switch" role="group" aria-label="狀態切換"><button id="planningBtn" class="active">▤ 計畫</button><button id="doingBtn">▶ 執行</button></div></div>
- <div class="rule" id="modeRule"><strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必多想，只要完成眼前這一步；新想法先放進時間條，稍後再想。</div>
+ <div class="hero-top">
+   <div>
+     <div class="eyebrow">MY GENTLE PRODUCTIVITY</div>
+     <h2 id="heroTitle">先整理，再開始。</h2>
+     <p id="heroDesc">計畫時允許自己想很多；執行時，把注意力交給眼前的一步。</p>
+   </div>
+   <div class="mode-switch-container">
+     <div class="mode-switch" role="group" aria-label="狀態切換">
+       <button id="planningBtn" class="active">▤ 計畫</button>
+       <button id="doingBtn">▶ 執行</button>
+     </div>
+     <button id="openStatsBtn" class="soft-btn" style="font-size:11px; padding:6px 12px;">▥ 使用數據</button>
+   </div>
+ </div>
+ <div class="rule" id="modeRule"><strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時不必多想，只要完成眼前這一步；新想法先點擊上方筆記圖示記下。</div>
 </section>
-<div class="grid">
-<section class="panel">
+
+<!-- 執行清單面板 (計畫模式下在版面上，執行模式下變為側邊欄) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<section class="panel" id="planPanel">
  <div class="panel-head"><div><h3 id="planPanelTitle">▤ 今日執行清單</h3><div class="sub" id="planPanelSub">只放今天真的要做的事，最多 3 件</div></div><div class="count" id="planCount">0 / 3</div></div>
  <div class="plan-list" id="planList"></div>
  <form class="add-plan" id="planForm"><input class="field" id="planInput" maxlength="120" placeholder="例如：去圖書館完成報告…" aria-label="新增今日計畫"><button class="primary" type="submit">＋ 加入</button></form>
  <div class="sub" id="planTip" style="margin-top:12px">小提醒：相信自己做得完就寫下來去做吧！</div>
 </section>
-<section class="panel" id="thoughtPanel">
- <div class="panel-head"><div><h3>◷ 想法記錄</h3><div class="sub" id="thoughtPanelSub">記錄想法出現的時間，不急著處理</div></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end"><select class="field" id="thoughtDateSelect" aria-label="查看哪一天的想法" style="width:auto;max-width:150px;padding:8px 10px;font-size:12px"></select><div class="count" id="thoughtCount">0 則</div></div></div>
- <div class="execute-banner hide" id="executeNotice"><strong>♥ 現在是執行時間</strong>先把注意力留給手上的任務。突然冒出的想法可以快速記下，但不需要現在解決它！</div>
- <form class="thought-form" id="thoughtForm">
-  <div class="form-row"><label class="small-label" for="thoughtTime">想法出現時間</label><input class="field" id="thoughtTime" type="time" required></div>
-  <div><label class="small-label" for="thoughtInput">剛剛想到什麼？</label><textarea class="field" id="thoughtInput" maxlength="800" placeholder="例如：等下想去買麻辣燙……" required></textarea></div>
-  <div class="form-row"><label class="small-label" for="thoughtType">想法類型</label><select class="field" id="thoughtType"><option>靈感</option><option>待思考</option><option>生活觀察</option><option>未來計畫</option><option>情緒 / 感受</option></select></div>
-  <div class="form-actions"><span>記錄下來，就不用一直在腦中提醒自己。</span><button class="primary" type="submit" id="thoughtSubmit">記下這個想法</button></div>
- </form>
- <div class="timeline" id="timeline"></div>
- <div class="empty hide" id="thoughtEmpty">今天的時間條還是空白的。<br>有想法時，再來吧 ✦</div>
-</section>
-</div>
 
-<section class="panel focus-panel hide" id="focusPanel" style="margin-top:15px">
- <div class="quick-start-box">
-   <div>
-     <strong>覺得很難開始嗎？</strong>
-     <p>不用想著把事情做完，只要給自己 2 分鐘，打開檔案或坐下來就好。</p>
-   </div>
-   <button class="btn-two-min" id="btnTwoMin">⚡ 先做 2 分鐘</button>
- </div>
+<button class="primary sidebar-toggle-btn hide" id="sidebarToggleBtn">▤ 今日清單</button>
 
+<!-- 執行計時器面板 (僅執行模式下顯示) -->
+<section class="panel focus-panel hide" id="focusPanel">
  <div class="panel-head"><div><h3>▶ 執行計時器</h3><div class="sub">支援跨午夜切割紀錄；關閉或重新整理自動保存</div></div><div class="count" id="focusStatus">尚未開始</div></div>
  
- <div class="focus-layout">
-  <div class="focus-clock">
-    <div class="clock-label">本次執行時間</div>
-    <div class="clock-value" id="focusClock">00:00:00</div>
-    <div class="focus-actions">
-      <button class="primary" id="toggleFocusBtn">▶ 開始計時</button>
-      <button class="soft-btn" id="stopFocusBtn">■ 結束並記錄</button>
-    </div>
-  </div>
-  <div class="average-box">
-    <div class="clock-label">今日已累計專注</div>
-    <div class="average-value" id="todayTotalTime">0 秒</div>
-    <div class="sub" style="margin-top:8px">最近 7 天平均（僅計算有紀錄日）：<strong id="averageTime">0 秒</strong></div>
-    <div class="sub" id="averageDetail">目前尚無執行紀錄</div>
-  </div>
- </div>
+ <div class="focus-clock">
+   <div class="clock-label">本次執行時間</div>
+   <div class="clock-value" id="focusClock">00:00:00</div>
+   <div class="focus-actions">
+     <button class="primary" id="toggleFocusBtn">▶ 開始計時</button>
+     <button class="soft-btn" id="stopFocusBtn">■ 結束並記錄</button>
+   </div>
 
- <div class="achievement-box" id="achievementBox">
-   ♥ <strong>今日進步：</strong>今天踏出第一步就是很棒的開始，專注眼前這一步就好。
- </div>
+   <!-- 分心功能直接置於計時器區塊內 -->
+   <div class="procrastination">
+     <div style="display:flex; justify-content:space-between; align-items:center;">
+       <div>
+         <div style="font-size:13px; font-weight:700; color:#6e4d46;">▣ 需要喘口氣嗎？</div>
+         <div class="sub" style="margin-top:2px;">計時會暫停，允許自己分心 10 分鐘</div>
+       </div>
+       <button class="soft-btn" id="startTen" style="padding:6px 10px; font-size:11px;">☁ 分心一下</button>
+     </div>
+     
+     <div class="countdown hide" id="countdownBox">
+       <div class="clock-label">分心時間剩餘</div>
+       <div class="clock-value" id="countdownClock" style="font-size:28px; margin:4px 0 10px;">10:00</div>
+       <button class="soft-btn" id="cancelCountdown">提早結束分心</button>
+     </div>
 
- <div class="chart-panel">
-  <div class="chart-header">
-    <div>
-      <div class="clock-label">近 7 天執行時間比較</div>
-      <div class="sub" style="margin:2px 0 0">每日專注時數</div>
-    </div>
-  </div>
-  <div class="chart-container" id="barChartContainer"></div>
- </div>
-
- <div class="countdown" id="pomodoroPrompt" style="margin-top:14px">
-  <div class="clock-label">番茄鐘狀態（休息期間專注計時器會完全暫停）</div>
-  <div id="pomodoroMessage">開始計時後，每累積 25 分鐘會彈窗主動提醒休息。</div>
-  <div class="sub" id="breakStatus" style="margin-top:8px"></div>
-  <div class="rescue-actions hide" id="breakActionGroup" style="margin-top:10px">
-    <button class="primary" id="resumeFromBreakBtn">▶ 結束休息，繼續專注</button>
-    <button class="soft-btn" id="finishFromBreakBtn">■ 結束休息並記錄今日時間</button>
-  </div>
- </div>
-
- <div class="execution-thoughts" style="margin-top:14px">
-  <div class="panel-head"><div><h3>◷ 執行中的想法</h3><div class="sub">途中冒出的想法可以先記下，不必離開執行模式</div></div></div>
-  <form class="thought-form" id="doingThoughtForm">
-   <div class="form-row"><label class="small-label" for="doingThoughtTime">記錄時間</label><input class="field" id="doingThoughtTime" type="time" required></div>
-   <div><label class="small-label" for="doingThoughtInput">剛剛想到什麼？</label><textarea class="field" id="doingThoughtInput" maxlength="800" placeholder="先把想法放在這裡，等等再處理……" required></textarea></div>
-   <div class="form-actions"><span>執行途中紀錄會用不同底色標示。</span><button class="primary" type="submit">記下想法</button></div>
-  </form>
-  <div class="timeline" id="doingTimeline"></div>
-  <div class="empty" id="doingThoughtEmpty">執行途中還沒有記錄想法。</div>
- </div>
-
- <div class="procrastination">
-  <div><h3>▣ 我就是想分心</h3><div class="sub">可以分心 10 分鐘。分心時專注計時會自動暫停，結束後提供繼續或結算選項。</div></div>
-  <div class="rescue-actions"><button class="primary" id="startTen">↗ 我就是想分心 10 分鐘</button></div>
-  
-  <div class="countdown hide" id="countdownBox">
-    <div class="clock-label">分心時間剩餘</div>
-    <div class="clock-value" id="countdownClock">10:00</div>
-    <button class="soft-btn" id="cancelCountdown">提早結束分心</button>
-  </div>
-
-  <div class="countdown hide" id="distractionChoiceBox" style="background:#fff2ed;border-color:#e8beb2">
-    <div class="clock-label">分心已結束，接下來要？</div>
-    <div style="font-size:12px;margin:6px 0 10px;color:var(--ink-light)">準備好重回任務，或是結束今天的專注？</div>
-    <div class="rescue-actions">
-      <button class="primary" id="resumeDistractionBtn">▶ 繼續開始執行</button>
-      <button class="soft-btn" id="stopDistractionBtn">■ 結束執行計時並記錄</button>
-    </div>
-  </div>
-
-  <div class="average-box">
-    <div class="clock-label">最近 7 天分心統計</div>
-    <div class="average-value"><span id="todayDistractionCount">0</span> 次 <span class="sub">／今天</span></div>
-    <div class="sub">每日平均分心（包含無分心日）：<strong id="averageDistractions">0 次</strong></div>
-    <div class="sub" id="distractionDetail">以 7 天作為固定基準計算</div>
-  </div>
+     <div class="countdown hide" id="distractionChoiceBox" style="background:#fff2ed;border-color:#e8beb2">
+       <div class="clock-label">分心已結束，接下來要？</div>
+       <div style="font-size:12px;margin:6px 0 10px;color:var(--ink-light)">準備好重回任務，或是結束今天的專注？</div>
+       <div class="rescue-actions">
+         <button class="primary" id="resumeDistractionBtn">▶ 繼續開始執行</button>
+         <button class="soft-btn" id="stopDistractionBtn">■ 結束執行並記錄</button>
+       </div>
+     </div>
+   </div>
  </div>
 </section>
 
-<!-- 番茄鐘彈出式視窗 (Popup Modal) -->
-<div class="modal-backdrop hide" id="pomodoroModal" role="dialog" aria-modal="true" aria-labelledby="modalPomodoroTitle">
+<!-- 想法記錄彈窗 Modal -->
+<div class="modal-backdrop hide" id="thoughtModal" role="dialog" aria-modal="true" aria-labelledby="thoughtModalTitle">
   <div class="modal-card">
-    <div style="font-size:32px;margin-bottom:8px">🍅</div>
-    <h3 id="modalPomodoroTitle" style="font-size:17px;color:#86564f;margin:0 0 8px">番茄鐘達成！</h3>
-    <p id="modalPomodoroDesc" style="font-size:12px;color:#6e4d46;line-height:1.6;margin:0 0 18px">已經專注了 25 分鐘，給自己一段放鬆時間吧！</p>
-    <div class="focus-actions" style="justify-content:center;gap:8px">
-      <button class="primary" id="modalTakeBreakBtn">☕ 休息 5 分鐘</button>
-      <button class="soft-btn" id="modalSkipBreakBtn">▶ 繼續專注</button>
-      <button class="mini-btn" id="modalStopFocusBtn" style="padding:8px 12px;font-size:11px">■ 結束並記錄</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+      <h3 id="thoughtModalTitle" style="margin:0; font-size:18px; color:#86564f;">▤ 想法記錄</h3>
+      <button class="mini-btn" id="closeThoughtBtn" style="font-size:16px;">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:12px;">
+      <select class="field" id="thoughtDateSelect" aria-label="查看哪一天的想法" style="width:auto;max-width:150px;padding:6px 10px;font-size:12px"></select>
+      <div class="count" id="thoughtCount">0 則</div>
+    </div>
+    <form class="thought-form" id="thoughtForm">
+      <div class="form-row"><label class="small-label" for="thoughtTime">記錄時間</label><input class="field" id="thoughtTime" type="time" required></div>
+      <div><label class="small-label" for="thoughtInput">剛剛想到什麼？</label><textarea class="field" id="thoughtInput" maxlength="800" placeholder="例如：等下想去買麻辣燙……先記錄下來，大腦就不用一直惦記著。" required></textarea></div>
+      <div class="form-row"><label class="small-label" for="thoughtType">想法類型</label>
+        <select class="field" id="thoughtType">
+          <option>靈感</option><option>待思考</option><option>生活觀察</option><option>未來計畫</option><option>情緒 / 感受</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <span>想法出現了就先安放於此。</span>
+        <button class="primary" type="submit" id="thoughtSubmit">記下想法</button>
+      </div>
+    </form>
+    <div class="timeline" id="timeline"></div>
+    <div class="empty hide" id="thoughtEmpty">今天的時間條還是空白的。<br>有想法時，再來吧 ✦</div>
+  </div>
+</div>
+
+<!-- 數據分析彈窗 Modal -->
+<div class="modal-backdrop hide" id="statsModal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+      <h3 style="margin:0; font-size:18px; color:#86564f;">▥ 使用數據與分析</h3>
+      <button class="mini-btn" id="closeStatsBtn" style="font-size:16px;">✕</button>
+    </div>
+    
+    <div class="average-box" style="margin-bottom: 15px;">
+      <div class="clock-label">今日已累計專注</div>
+      <div class="average-value" id="todayTotalTime">0 秒</div>
+      <div class="sub" style="margin-top:8px">最近 7 天平均（僅計算有紀錄日）：<strong id="averageTime">0 秒</strong></div>
+      <div class="sub" id="averageDetail">目前尚無執行紀錄</div>
+    </div>
+
+    <div class="chart-panel" style="margin-bottom: 15px;">
+      <div class="chart-header">
+        <div>
+          <div class="clock-label">近 7 天執行時間比較</div>
+          <div class="sub" style="margin:2px 0 0">每日專注時數</div>
+        </div>
+      </div>
+      <div class="chart-container" id="barChartContainer"></div>
+    </div>
+
+    <div class="average-box">
+      <div class="clock-label">最近 7 天分心統計</div>
+      <div class="average-value"><span id="todayDistractionCount">0</span> 次 <span class="sub">／今天</span></div>
+      <div class="sub">每日平均分心（包含無分心日）：<strong id="averageDistractions">0 次</strong></div>
+      <div class="sub" id="distractionDetail">以 7 天作為固定基準計算</div>
     </div>
   </div>
 </div>
@@ -1024,8 +549,8 @@ button { min-height: 38px; }
 <div class="footer">
  <div>SAVE YOUR THOUGHTS. KEEP MOVING. <span>♥</span> LOCAL DATA</div>
  <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;justify-content:center">
-   <button class="soft-btn" id="exportBtn" style="font-size:11px;padding:4px 8px">💾 匯出資料備份 (JSON)</button>
-   <button class="soft-btn" id="importBtn" style="font-size:11px;padding:4px 8px">📂 匯入備份資料</button>
+   <button class="soft-btn" id="exportBtn" style="font-size:11px;padding:4px 8px">↓ 匯出備份 (JSON)</button>
+   <button class="soft-btn" id="importBtn" style="font-size:11px;padding:4px 8px">↑ 匯入備份</button>
    <input type="file" id="importInput" accept=".json" style="display:none">
  </div>
  <div class="backup-time-tag" id="backupNotice">最後備份時間：尚未備份（建議定期匯出存檔）</div>
@@ -1034,12 +559,41 @@ button { min-height: 38px; }
 </div>
 <div class="toast" id="toast"></div>
 
+<!-- 隱藏彩蛋：今日幸運籤 -->
+<div class="modal-backdrop hide" id="luckyModal" role="dialog" aria-modal="true" aria-labelledby="luckyModalTitle">
+  <div class="modal-card lucky-card">
+    <div class="lucky-topline">✦ A LITTLE SECRET FOR YOU ✦</div>
+    <div class="lucky-heading-row">
+      <h3 id="luckyModalTitle">今日幸運籤</h3>
+      <button class="mini-btn" id="closeLuckyBtn" aria-label="關閉幸運籤">✕</button>
+    </div>
+    <p class="lucky-subtitle" id="luckySubtitle">準備好了嗎？按下抽取，看看今天的小小好運。</p>
+    <button class="primary lucky-draw-action" id="luckyDrawAction">✦ 抽取今日好運 ✦</button>
+    <div class="lucky-results">
+      <div class="lucky-result">
+        <span class="lucky-label">LUCKY COLOR</span>
+        <div class="lucky-color-line"><span id="luckyColorSwatch" class="lucky-swatch"></span><strong id="luckyColorName">奶油黃</strong></div>
+      </div>
+      <div class="lucky-result lucky-number-result">
+        <span class="lucky-label">LUCKY NUMBER</span>
+        <strong class="lucky-number" id="luckyNumber">7</strong>
+      </div>
+    </div>
+    <div class="lucky-message-box">
+      <span class="lucky-star">✦</span>
+      <p id="luckyMessage">你不必一次走完全程，只要願意踏出下一步，就已經在前進了。</p>
+    </div>
+    <p class="lucky-footnote">這不是預言，只是給今天的你一個溫柔的小提醒。</p>
+    <button class="primary lucky-close-action" id="luckyOkayBtn">收下今日好運 ✧</button>
+  </div>
+</div>
+
 <script>
 (() => {
  const $ = id => document.getElementById(id);
  const STORAGE_KEY = 'rose-routine-v1';
  const BACKUP_KEY = 'rose-routine-backup-time';
- const TIMER_STATE_KEY = 'rose-routine-active-timer'; // 持久化即時狀態
+ const TIMER_STATE_KEY = 'rose-routine-active-timer';
  const BASE_TITLE = 'DAY LOG / 計畫與執行';
 
  let mode = 'planning';
@@ -1112,20 +666,14 @@ button { min-height: 38px; }
  const nowInit = new Date();
  $('todayLabel').textContent = `今天 · ${nowInit.getFullYear()}/${nowInit.getMonth()+1}/${nowInit.getDate()}`;
  $('thoughtTime').value = timeNow();
- $('doingThoughtTime').value = timeNow();
 
  /* 計時器核心狀態變數 */
  let focusStartedAt = null;
  let focusAccumulatedMs = 0;
- let focusSegments = []; // 實際開始／暫停區間，避免把暫停時間算進專注
+ let focusSegments = [];
  let isPaused = false;
- let breakEndsAt = null;
  let countdownEndsAt = null;
- let twoMinTimerEndsAt = null;
- let lastPomodoroCycles = 0;
- let pendingBreakMinutes = 5;
 
- // 統一處理專注暫停與區間記錄，避免漏記 focusSegments
  function pauseFocusTimer() {
    if (focusStartedAt) {
      const nowTs = Date.now();
@@ -1136,20 +684,15 @@ button { min-height: 38px; }
      focusStartedAt = null;
      isPaused = true;
    }
-   twoMinTimerEndsAt = null; // 暫停時一併取消未完成的 2 分鐘衝刺倒數
  }
 
- // 將活動狀態寫入 localStorage 防止重整遺失
  function persistTimerState() {
    const state = {
      focusStartedAt,
      focusAccumulatedMs,
      focusSegments,
      isPaused,
-     breakEndsAt,
      countdownEndsAt,
-     twoMinTimerEndsAt,
-     lastPomodoroCycles,
      mode,
      updatedAt: Date.now()
    };
@@ -1158,7 +701,6 @@ button { min-height: 38px; }
    } catch(e){}
  }
 
- // 頁面載入時還原活動計時狀態
  function restoreTimerState() {
    try {
      const saved = window.localStorage.getItem(TIMER_STATE_KEY);
@@ -1170,16 +712,10 @@ button { min-height: 38px; }
      focusAccumulatedMs = st.focusAccumulatedMs || 0;
      focusSegments = Array.isArray(st.focusSegments) ? st.focusSegments.filter(x => x && Number.isFinite(x.start) && Number.isFinite(x.end) && x.end > x.start) : [];
      isPaused = !!st.isPaused;
-     breakEndsAt = st.breakEndsAt || null;
      countdownEndsAt = st.countdownEndsAt || null;
-     twoMinTimerEndsAt = st.twoMinTimerEndsAt || null;
-     lastPomodoroCycles = st.lastPomodoroCycles || 0;
 
      if (countdownEndsAt && countdownEndsAt > Date.now()) {
        $('countdownBox').classList.remove('hide');
-     }
-     if (breakEndsAt && breakEndsAt > Date.now()) {
-       $('breakActionGroup').classList.remove('hide');
      }
      if (st.mode && (st.mode === 'planning' || st.mode === 'doing')) {
        mode = st.mode;
@@ -1222,12 +758,6 @@ button { min-height: 38px; }
    if (countdownEndsAt) {
      const left = Math.max(0, countdownEndsAt - Date.now());
      document.title = `↗ (${fmtMinSec(left)}) 分心中 · DAY LOG`;
-   } else if (breakEndsAt) {
-     const left = Math.max(0, breakEndsAt - Date.now());
-     document.title = `☕ (${fmtMinSec(left)}) 休息中 · DAY LOG`;
-   } else if (twoMinTimerEndsAt) {
-     const left = Math.max(0, twoMinTimerEndsAt - Date.now());
-     document.title = `⚡ (${fmtMinSec(left)}) 兩分鐘衝刺 · DAY LOG`;
    } else if (focusStartedAt) {
      document.title = `▶ (${fmt(currentFocusMs())}) 專注中 · DAY LOG`;
    } else if (isPaused) {
@@ -1237,39 +767,11 @@ button { min-height: 38px; }
    }
  }
 
- function updateAchievements() {
-   const d = new Date();
-   const y = new Date(d); y.setDate(y.getDate() - 1);
-   const yesterdayKey = dateKey(y);
-   const yMs = data[yesterdayKey]?.focusMs || 0;
-   const tMs = (day().focusMs || 0) + currentFocusMs();
-   const box = $('achievementBox');
-   if(!box) return;
-
-   const tSec = Math.floor(tMs / 1000);
-   const ySec = Math.floor(yMs / 1000);
-
-   if (tSec > ySec && ySec > 0) {
-     box.innerHTML = `♥ <strong>今日亮點：</strong>今天已專注 <strong>${fmtFull(tMs)}</strong>，比昨天多前進了 <strong>${fmtFull(tMs - yMs)}</strong>！`;
-   } else if (tSec >= 25 * 60) {
-     box.innerHTML = `♥ <strong>今日亮點：</strong>今天已經累積完整番茄鐘（${fmtFull(tMs)}），節奏很穩健！`;
-   } else if (tSec > 0) {
-     box.innerHTML = `♥ <strong>今日進步：</strong>已經啟動並專注了 <strong>${fmtFull(tMs)}</strong>，最困難的開始這一步你已經做到了。`;
-   } else {
-     box.innerHTML = `♥ <strong>溫柔提醒：</strong>不強求一次做很久，即使只開始 2 分鐘，也是扎實的推進。`;
-   }
- }
-
- /* ==========================================================================
-    核心關鍵：跨午夜（Midnight Split）精準切割函式
-    ========================================================================== */
  function splitAndRecordInterval(startTs, endTs) {
    let currStart = startTs;
    while (currStart < endTs) {
      const startDate = new Date(currStart);
      const k = dateKey(startDate);
-     
-     // 取得當天的午夜結束時間 (即隔天 00:00:00.000)
      const nextMidnight = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1, 0, 0, 0, 0).getTime();
      const segmentEnd = Math.min(endTs, nextMidnight);
      const segmentMs = segmentEnd - currStart;
@@ -1288,7 +790,6 @@ button { min-height: 38px; }
    save();
  }
 
- /* 即時監聽時鐘：若在執行中跨越午夜，自動結算前一天並換日 */
  function handleMidnightRollover(prevKey, newKey) {
    const nowTs = Date.now();
    if (focusStartedAt) {
@@ -1306,7 +807,6 @@ button { min-height: 38px; }
      save();
    }
    
-   // 切換跨日後將暫存區段歸零重算
    focusSegments = [];
    focusAccumulatedMs = 0;
    if (focusStartedAt) {
@@ -1335,9 +835,7 @@ button { min-height: 38px; }
    }
 
    updateFocusUI();
-   checkBreakTimer();
    checkCountdownTimer();
-   checkTwoMinTimer();
    updateTabTitle();
    persistTimerState();
  }
@@ -1345,22 +843,166 @@ button { min-height: 38px; }
 
  function setMode(next) {
    mode = next;
-   $('planningBtn').classList.toggle('active', mode==='planning');
-   $('doingBtn').classList.toggle('active', mode==='doing');
-   $('heroTitle').textContent = mode==='planning' ? '寫下今天一定要做的3件事，再開始。' : '現在，只要先開始2分鐘就好。';
-   $('heroDesc').textContent = mode==='planning' ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了。接下來只要做眼前的一步，不需要一直重新檢討。';
-   $('modeRule').innerHTML = mode==='planning' ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。執行時只要完成眼前這一步；新想法先放進時間條，稍後再想。' : '<strong>執行模式：</strong>挑一件清單上的事開始。新想法可以用右邊的時間條快速收納，但先不修改今天的方向；除非真的有必要，等回到計畫狀態再處理。';
-   $('executeNotice').classList.add('hide');
-   $('thoughtInput').placeholder = '例如：等下想去買麻辣燙……';
-   $('thoughtSubmit').textContent = '記下這個想法';
-   $('planInput').disabled = mode==='doing';
-   $('planForm').classList.toggle('hide', mode==='doing');
-   $('thoughtPanel').classList.toggle('hide', mode!=='planning');
-   $('focusPanel').classList.toggle('hide', mode!=='doing');
-   renderDoingThoughts();
+   const isDoing = (mode === 'doing');
+   $('planningBtn').classList.toggle('active', !isDoing);
+   $('doingBtn').classList.toggle('active', isDoing);
+   $('heroTitle').textContent = !isDoing ? '先整理，再開始。' : '現在，專注眼前的一步。';
+   $('heroDesc').textContent = !isDoing ? '計畫時允許自己想很多；執行時，把注意力交給眼前的一步。' : '你已經決定好今天要做什麼了，不需要一直重新檢討方向。';
+   $('modeRule').innerHTML = !isDoing ? '<strong>小小約定：</strong>把今天最重要的 1～3 件事放在下面。新想法先點擊上方筆記圖示記下，稍後再想。' : '<strong>執行模式：</strong>執行清單已隱藏於右下角邊欄中，新想法可以用上方筆記圖示快速收納。';
+   $('planInput').disabled = isDoing;
+   $('planForm').classList.toggle('hide', isDoing);
+   $('focusPanel').classList.toggle('hide', !isDoing);
+   
+   if(isDoing) {
+     $('planPanel').classList.add('is-sidebar');
+     $('sidebarToggleBtn').classList.remove('hide');
+     $('openStatsBtn').classList.add('hide');
+   } else {
+     $('planPanel').classList.remove('is-sidebar', 'open');
+     $('sidebarOverlay').classList.remove('open');
+     $('sidebarToggleBtn').classList.add('hide');
+     $('openStatsBtn').classList.remove('hide');
+   }
+   
    renderPlans();
    persistTimerState();
  }
+
+ // Sidebar toggles
+ $('sidebarToggleBtn').addEventListener('click', () => {
+   $('planPanel').classList.add('open');
+   $('sidebarOverlay').classList.add('open');
+ });
+ $('sidebarOverlay').addEventListener('click', () => {
+   $('planPanel').classList.remove('open');
+   $('sidebarOverlay').classList.remove('open');
+ });
+
+ // Modals toggles
+ $('openThoughtBtn').addEventListener('click', () => {
+   $('thoughtModal').classList.remove('hide');
+   $('thoughtTime').value = timeNow();
+   setTimeout(() => $('thoughtInput').focus(), 50);
+ });
+ $('closeThoughtBtn').addEventListener('click', () => $('thoughtModal').classList.add('hide'));
+ 
+ $('openStatsBtn').addEventListener('click', () => {
+   $('statsModal').classList.remove('hide');
+   updateFocusUI();
+ });
+ $('closeStatsBtn').addEventListener('click', () => $('statsModal').classList.add('hide'));
+
+ // 隱藏彩蛋：幸運顏色、數字與鼓勵句
+ const luckyColors = [
+   { name: '奶油黃', hex: '#F2D27A' }, { name: '櫻花粉', hex: '#EFA9B8' },
+   { name: '薄荷綠', hex: '#9BCBB2' }, { name: '天空藍', hex: '#9EC9E8' },
+   { name: '薰衣草紫', hex: '#B9A7D9' }, { name: '蜜桃橘', hex: '#F3AE8D' },
+   { name: '玫瑰紅', hex: '#D98282' }, { name: '燕麥米', hex: '#D9C4A5' },
+   { name: '鼠尾草綠', hex: '#A8B59A' }, { name: '霧霾藍', hex: '#91AFC2' }
+ ];
+ const luckyMessages = [
+   '你不必一次走完全程，只要願意踏出下一步，就已經在前進了。',
+   '今天不用做到完美，願意開始、願意嘗試，就很值得肯定。',
+   '慢一點也沒關係。你的步調不需要拿來和任何人比較。',
+   '有些進步很安靜，但不代表它沒有發生。相信那些小小的累積。',
+   '如果今天有點累，就把目標縮小一點；小小的一步也算數。',
+   '你可以一邊不確定，一邊往前走。勇敢不是完全不害怕。',
+   '別因為還沒到達，就忘了自己已經走過一段路。',
+   '把注意力放回眼前能做的一件事，剩下的可以慢慢來。',
+   '休息不是落後。照顧好自己，也是讓旅程繼續的方法。',
+   '今天的你不需要證明什麼，只要真誠地完成自己能做的部分。',
+   '不必等到有動力才開始，有時候開始一點點，動力才會慢慢來。',
+   '即使今天只完成一件小事，也可以為自己留下一個肯定。'
+ ];
+
+ function getSavedDailyLucky() {
+   try {
+     const saved = localStorage.getItem(`dayLogLucky_${today}`);
+     if (!saved) return null;
+     const parsed = JSON.parse(saved);
+     if (parsed && Number.isInteger(parsed.colorIndex) && Number.isInteger(parsed.number) && parsed.number >= 0 && parsed.number <= 9 && Number.isInteger(parsed.messageIndex)) return parsed;
+   } catch (e) {}
+   return null;
+ }
+
+ function saveDailyLucky(pick) {
+   try {
+     localStorage.setItem(`dayLogLucky_${today}`, JSON.stringify(pick));
+   } catch (e) {}
+ }
+
+ function revealLuckyResult(pick) {
+   const card = $('luckyModal').querySelector('.lucky-card');
+   const color = luckyColors[pick.colorIndex % luckyColors.length];
+   $('luckyColorName').textContent = color.name;
+   $('luckyColorSwatch').style.backgroundColor = color.hex;
+   $('luckyNumber').textContent = pick.number;
+   $('luckyMessage').textContent = luckyMessages[pick.messageIndex % luckyMessages.length];
+   card.classList.remove('is-drawing');
+   card.classList.add('is-revealed');
+   $('luckyDrawAction').style.display = 'none';
+   $('luckySubtitle').textContent = '今天的小幸運，請收下。';
+ }
+
+ function showLuckyPopup() {
+   const card = $('luckyModal').querySelector('.lucky-card');
+   card.classList.remove('is-revealed', 'is-drawing');
+   $('luckyDrawAction').disabled = false;
+   $('luckyDrawAction').style.display = 'block';
+   $('luckyDrawAction').textContent = '✦ 抽取今日好運 ✦';
+   $('luckySubtitle').textContent = '準備好了嗎？按下抽取，看看今天的小小好運。';
+   $('luckyModal').classList.remove('hide');
+
+   // 今日已抽過就直接顯示原本結果，不再需要重抽
+   const saved = getSavedDailyLucky();
+   if (saved) {
+     revealLuckyResult(saved);
+     $('luckyOkayBtn').focus();
+   } else {
+     $('luckyDrawAction').focus();
+   }
+ }
+
+ function drawLucky() {
+   const card = $('luckyModal').querySelector('.lucky-card');
+   if (card.classList.contains('is-drawing') || card.classList.contains('is-revealed') || getSavedDailyLucky()) return;
+   
+   const pick = {
+     colorIndex: Math.floor(Math.random() * luckyColors.length),
+     number: Math.floor(Math.random() * 10),
+     messageIndex: Math.floor(Math.random() * luckyMessages.length)
+   };
+   
+   const color = luckyColors[pick.colorIndex % luckyColors.length];
+   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   
+   $('luckyDrawAction').disabled = true;
+   $('luckyDrawAction').textContent = '好運正在路上…';
+   $('luckySubtitle').textContent = '叮叮噹噹——正在為你抽出今日小幸運！';
+   card.classList.add('is-drawing');
+
+   let ticks = 0;
+   const tickLimit = reducedMotion ? 1 : 12;
+   const interval = reducedMotion ? 0 : 90;
+   const rollTimer = setInterval(() => {
+     $('luckyNumber').textContent = Math.floor(Math.random() * 10);
+     ticks++;
+     if (ticks >= tickLimit) {
+       clearInterval(rollTimer);
+       saveDailyLucky(pick); // 抽籤完成後存檔
+       revealLuckyResult(pick);
+       $('luckyOkayBtn').focus();
+     }
+   }, interval);
+ }
+
+ $('luckyDrawBtn').addEventListener('click', showLuckyPopup);
+ $('luckyDrawBtn').addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showLuckyPopup(); } });
+ $('luckyDrawAction').addEventListener('click', drawLucky);
+ $('closeLuckyBtn').addEventListener('click', () => $('luckyModal').classList.add('hide'));
+ $('luckyOkayBtn').addEventListener('click', () => $('luckyModal').classList.add('hide'));
+ $('luckyModal').addEventListener('click', ev => { if (ev.target === $('luckyModal')) $('luckyModal').classList.add('hide'); });
+ document.addEventListener('keydown', ev => { if (ev.key === 'Escape') $('luckyModal').classList.add('hide'); });
 
  function renderBarChart(recentDays) {
    const container = $('barChartContainer');
@@ -1391,28 +1033,13 @@ button { min-height: 38px; }
    });
  }
 
- /* ==========================================================================
-    番茄鐘彈窗 Popup 控制邏輯
-    ========================================================================== */
- function showPomodoroPopup(breakMinutes, title, desc) {
-   pendingBreakMinutes = breakMinutes;
-   $('modalPomodoroTitle').textContent = title;
-   $('modalPomodoroDesc').textContent = desc;
-   $('modalTakeBreakBtn').textContent = `☕ 休息 ${breakMinutes} 分鐘`;
-   $('pomodoroModal').classList.remove('hide');
- }
-
- function hidePomodoroPopup() {
-   $('pomodoroModal').classList.add('hide');
- }
-
  function updateFocusUI(){
    $('focusClock').textContent = fmt(currentFocusMs());
 
    const toggleBtn = $('toggleFocusBtn');
    if (focusStartedAt) {
      $('focusStatus').textContent = '計時中';
-     toggleBtn.textContent = '⏸ 暫停';
+     toggleBtn.textContent = '⏸ 暫停計時';
      toggleBtn.className = 'soft-btn';
    } else if (isPaused) {
      $('focusStatus').textContent = '暫停中';
@@ -1443,27 +1070,11 @@ button { min-height: 38px; }
    $('averageDetail').textContent = active.length ? `最近 7 天中，共 ${active.length} 天有專注紀錄` : '目前尚無專注紀錄';
 
    renderBarChart(recentDays);
-   updateAchievements();
 
    const totalDistractions = recentDays.reduce((sum,k)=>sum+(Number(data[k]?.distractionCount)||0),0);
    $('todayDistractionCount').textContent = Number(day().distractionCount) || 0;
    $('averageDistractions').textContent = `${(totalDistractions/7).toFixed(1)} 次`;
    $('distractionDetail').textContent = `最近 7 天共 ${totalDistractions} 次（以連續 7 天口徑平均）`;
-
-   // 番茄鐘滿週期檢查與 Popup 彈窗觸發
-   const cycles = Math.floor(currentFocusMs() / (25 * 60 * 1000));
-   if(focusStartedAt && cycles > lastPomodoroCycles){
-     lastPomodoroCycles = cycles;
-     if(cycles % 4 === 0){
-       $('pomodoroMessage').textContent = '已專注 4 個番茄鐘（100分鐘），建議好好休息 20 分鐘。';
-       showPomodoroPopup(20, '🎉 4 個番茄鐘達成！', '太厲害了！你已經連續累計了 4 個番茄鐘（100分鐘），建議給自己 20 分鐘長休息，補充能量。');
-       triggerNotify('番茄鐘達成！', '已經專注 4 個番茄鐘，建議好好休息 20 分鐘。');
-     } else {
-       $('pomodoroMessage').textContent = `已累積 ${cycles} 個番茄鐘（${cycles * 25}分鐘），休息時間到了。`;
-       showPomodoroPopup(5, '🍅 番茄鐘達成！', '專注了 25 分鐘，眼前的小步已經推進！要休息 5 分鐘放鬆一下嗎？');
-       triggerNotify('番茄鐘達成！', '已經專注 25 分鐘，放鬆休息 5 分鐘吧。');
-     }
-   }
  }
 
  $('toggleFocusBtn').addEventListener('click', () => {
@@ -1486,27 +1097,17 @@ button { min-height: 38px; }
      toast('目前沒有正在進行的執行紀錄。');
      return;
    }
-   const sessionMs = currentFocusMs(); // 記錄計算當下的總累計
-   
+   const sessionMs = currentFocusMs();
    const nowTs = Date.now();
    if (focusStartedAt && nowTs > focusStartedAt) {
      focusSegments.push({ start: focusStartedAt, end: nowTs });
    }
-   // 將各段實際執行區間分別記錄，絕不以總時長倒推而包含暫停時間。
    focusSegments.forEach(seg => splitAndRecordInterval(seg.start, seg.end));
 
    focusStartedAt = null;
    focusAccumulatedMs = 0;
    focusSegments = [];
    isPaused = false;
-   lastPomodoroCycles = 0;
-
-   // 關閉番茄鐘 Popup 與清理休息狀態
-   hidePomodoroPopup();
-   breakEndsAt = null;
-   $('breakActionGroup').classList.add('hide');
-   $('breakStatus').textContent = '';
-   $('pomodoroMessage').textContent = '開始計時後，每累積 25 分鐘會彈窗主動提醒休息。';
 
    persistTimerState();
    updateFocusUI();
@@ -1514,94 +1115,6 @@ button { min-height: 38px; }
    toast(`本次專注結束，已記錄 ${fmtFull(sessionMs)}。`);
  }
  $('stopFocusBtn').addEventListener('click', stopAndRecordFocus);
-
- $('btnTwoMin').addEventListener('click', () => {
-   requestNotify();
-   if (!focusStartedAt) {
-     focusStartedAt = Date.now();
-     isPaused = false;
-     updateFocusUI();
-   }
-   twoMinTimerEndsAt = Date.now() + 2 * 60 * 1000;
-   toast('2 分鐘衝刺開始！先做眼前最簡單的一步就好。');
-   updateTabTitle();
-   persistTimerState();
- });
-
- function checkTwoMinTimer() {
-   if (!twoMinTimerEndsAt) return;
-   const left = Math.max(0, twoMinTimerEndsAt - Date.now());
-   if (left <= 0) {
-     twoMinTimerEndsAt = null;
-     triggerNotify('2 分鐘達成！', '太棒了！你已經啟動了任務，想繼續做還是休息一下？');
-     updateTabTitle();
-     persistTimerState();
-   }
- }
-
- function startBreak(minutes){
-   hidePomodoroPopup();
-   pauseFocusTimer();
-   breakEndsAt = Date.now() + minutes * 60 * 1000;
-   $('breakStatus').textContent = `休息倒數中：${minutes} 分鐘（專注計時已暫停）。`;
-   $('breakActionGroup').classList.remove('hide');
-   updateFocusUI();
-   updateTabTitle();
-   persistTimerState();
-   toast(`進入 ${minutes} 分鐘休息，專注碼錶已獨立暫停。`);
- }
-
- function endBreakState() {
-   breakEndsAt = null;
-   $('breakStatus').textContent = '';
-   $('breakActionGroup').classList.add('hide');
-   updateTabTitle();
-   persistTimerState();
- }
-
- function checkBreakTimer() {
-   if(!breakEndsAt) return;
-   const left = Math.max(0, breakEndsAt - Date.now());
-   if(left > 0){
-     $('breakStatus').textContent = `休息中剩餘：${fmtMinSec(left)}（專注計時已暫停）`;
-   } else {
-     endBreakState();
-     triggerNotify('休息時間結束', '休息已結束，可以繼續專注或記錄結束。');
-     if (isPaused || focusStartedAt) {
-       $('breakActionGroup').classList.remove('hide');
-     }
-   }
- }
-
- // Popup 按鈕事件綁定
- $('modalTakeBreakBtn').addEventListener('click', () => {
-   startBreak(pendingBreakMinutes);
- });
-
- $('modalSkipBreakBtn').addEventListener('click', () => {
-   hidePomodoroPopup();
-   toast('繼續專注衝刺！');
- });
-
- $('modalStopFocusBtn').addEventListener('click', () => {
-   hidePomodoroPopup();
-   stopAndRecordFocus();
- });
-
- $('resumeFromBreakBtn').addEventListener('click', () => {
-   endBreakState();
-   focusStartedAt = Date.now();
-   isPaused = false;
-   updateFocusUI();
-   updateTabTitle();
-   persistTimerState();
-   toast('回到工作節奏，繼續計時！');
- });
-
- $('finishFromBreakBtn').addEventListener('click', () => {
-   endBreakState();
-   stopAndRecordFocus();
- });
 
  $('startTen').addEventListener('click', () => {
    requestNotify();
@@ -1657,34 +1170,6 @@ button { min-height: 38px; }
    stopAndRecordFocus();
  });
 
- function renderDoingThoughts(){
-   const list = $('doingTimeline'); if(!list) return;
-   list.innerHTML = '';
-   const thoughts = [...(day().thoughts || [])].sort((a,b)=>a.time.localeCompare(b.time));
-   $('doingThoughtEmpty').classList.toggle('hide', thoughts.length !== 0);
-   thoughts.forEach(t=>{
-     const el = document.createElement('article');
-     el.className = 'event ' + (t.source==='doing' ? 'doing-thought' : 'plan-thought');
-     el.innerHTML = `<div class="event-top"><span class="event-time">${escapeHtml(t.time)}</span><button class="mini-btn" title="刪除此想法" aria-label="刪除此想法">×</button></div><div class="event-text">${escapeHtml(t.text)}</div><div class="event-tag">· ${t.source==='doing'?'執行途中記錄':'計畫中記錄'}${t.type?'｜'+escapeHtml(t.type):''}</div>`;
-     el.querySelector('button').addEventListener('click', () => {
-       day().thoughts = day().thoughts.filter(x => x.id !== t.id);
-       save(); renderDoingThoughts(); toast('已刪除這則想法');
-     });
-     list.appendChild(el);
-   });
- }
-
- $('doingThoughtForm').addEventListener('submit', e => {
-   e.preventDefault();
-   const text = $('doingThoughtInput').value.trim();
-   if(!text){ toast('先寫下一個想法再記錄。'); return; }
-   day().thoughts.push({ id: Date.now() + Math.random(), time: $('doingThoughtTime').value || timeNow(), text, type: '執行途中', source: 'doing' });
-   $('doingThoughtInput').value = '';
-   $('doingThoughtTime').value = timeNow();
-   save(); renderDoingThoughts(); renderThoughts();
-   toast('已記下執行途中想到的事。');
- });
-
  function movePlan(index, direction) {
    const target = index + direction;
    if(target < 0 || target >= day().plans.length) return;
@@ -1715,13 +1200,11 @@ button { min-height: 38px; }
      $('planPanelTitle').textContent = '▤ 今日執行清單';
      $('planPanelSub').textContent = '只放今天真的要做的事，最多 3 件';
      $('planTip').classList.remove('hide');
-     if (mode === 'planning') $('planForm').classList.remove('hide');
    } else {
      const parts = selectedViewDate.split('-');
      $('planPanelTitle').textContent = `▤ ${Number(parts[1])}/${Number(parts[2])} 任務回顧`;
      $('planPanelSub').textContent = '歷史任務檢視（唯讀）';
      $('planTip').classList.add('hide');
-     $('planForm').classList.add('hide');
    }
 
    $('planCount').textContent = `${currentDayPlans.filter(p=>p.done).length} / ${currentDayPlans.length} 完成`;
@@ -1799,8 +1282,6 @@ button { min-height: 38px; }
    selectedViewDate = $('thoughtDateSelect').value || today;
    const selectedDay = data[selectedViewDate] || freshDay();
    const thoughts = [...(selectedDay.thoughts || [])].sort((a,b)=>a.time.localeCompare(b.time));
-   const parts = selectedViewDate.split('-');
-   $('thoughtPanelSub').textContent = `${Number(parts[1])}/${Number(parts[2])} 的想法紀錄`;
    $('thoughtCount').textContent = `${thoughts.length} 則`;
    $('thoughtEmpty').classList.toggle('hide', thoughts.length !== 0);
    $('thoughtEmpty').innerHTML = selectedViewDate===today ? '今天還沒有想法紀錄。<br>有想法時，可以在這裡記下來。' : '這一天沒有保存想法紀錄。';
@@ -1833,10 +1314,10 @@ button { min-height: 38px; }
    e.preventDefault();
    const text = $('thoughtInput').value.trim();
    if(!text){ toast('先寫下一個想法再記錄喔 ♥'); $('thoughtInput').focus(); return; }
-   day().thoughts.push({ id: Date.now() + Math.random(), time: $('thoughtTime').value || timeNow(), text, type: $('thoughtType').value, source: 'planning' });
+   day().thoughts.push({ id: Date.now() + Math.random(), time: $('thoughtTime').value || timeNow(), text, type: $('thoughtType').value, source: mode === 'doing' ? 'doing' : 'planning' });
    $('thoughtInput').value = '';
    $('thoughtTime').value = timeNow();
-   save(); renderThoughts(); renderDoingThoughts(); toast('想法已記錄。');
+   save(); renderThoughts(); toast('想法已記錄。');
  });
 
  $('exportBtn').addEventListener('click', () => {
@@ -1907,7 +1388,6 @@ button { min-height: 38px; }
          }
          save();
          renderThoughts();
-         renderDoingThoughts();
          updateFocusUI();
        } else {
          toast('備份檔案格式不正確。');
@@ -1923,7 +1403,6 @@ button { min-height: 38px; }
  $('planningBtn').addEventListener('click', () => setMode('planning'));
  $('doingBtn').addEventListener('click', () => setMode('doing'));
 
- // 頁面關閉或隱藏時強制存儲當前暫時狀態
  window.addEventListener('beforeunload', persistTimerState);
  document.addEventListener('visibilitychange', () => {
    if (document.visibilityState === 'hidden') {
@@ -1931,11 +1410,9 @@ button { min-height: 38px; }
    }
  });
 
- // 初始化執行
  restoreTimerState();
  updateBackupLabel();
  renderThoughts();
- renderDoingThoughts();
  setMode(mode);
  updateFocusUI();
  refreshClock();
